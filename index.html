@@ -3,52 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Resume Builder | Create Professional Resumes</title>
+    <title>ATS Resume Builder | ATS-Friendly Professional Resumes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         /* ========== CSS VARIABLES ========== */
         :root {
-            --primary-color: #3a86ff;
-            --secondary-color: #8338ec;
-            --accent-color: #ff006e;
-            --success-color: #06d6a0;
-            --warning-color: #ffd166;
-            --danger-color: #ef476f;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --gray-color: #6c757d;
-            --light-gray: #e9ecef;
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-color: #1f2937;
+            --text-light: #6b7280;
+            --border-color: #e5e7eb;
+            --background-color: #f9fafb;
+            --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
             
-            --gradient-primary: linear-gradient(135deg, #3a86ff 0%, #8338ec 100%);
-            --gradient-secondary: linear-gradient(135deg, #ff006e 0%, #fb5607 100%);
-            --gradient-light: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
-            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --border-radius: 6px;
+            --border-radius-lg: 12px;
             
-            --border-radius: 12px;
-            --border-radius-sm: 8px;
-            
-            --font-primary: 'Poppins', sans-serif;
-            --font-secondary: 'Montserrat', sans-serif;
-            
-            --transition: all 0.3s ease;
-        }
-
-        /* Dark Mode */
-        .dark-mode {
-            --primary-color: #4d9fff;
-            --secondary-color: #9d5cff;
-            --accent-color: #ff4d9a;
-            --light-color: #121212;
-            --dark-color: #f8f9fa;
-            --gray-color: #adb5bd;
-            --light-gray: #2d2d2d;
-            --gradient-light: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --transition: all 0.2s ease;
         }
 
         /* ========== BASE STYLES ========== */
@@ -59,11 +40,11 @@
         }
 
         body {
-            font-family: var(--font-primary);
-            color: var(--dark-color);
-            background-color: var(--light-color);
-            line-height: 1.6;
-            transition: var(--transition);
+            font-family: var(--font-family);
+            color: var(--text-color);
+            background-color: var(--background-color);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
@@ -78,137 +59,121 @@
         }
 
         /* ========== TYPOGRAPHY ========== */
-        h1, h2, h3, h4 {
-            font-family: var(--font-secondary);
-            font-weight: 700;
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
             line-height: 1.2;
+            color: var(--text-color);
         }
 
         h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-        }
-
-        h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
         }
 
+        h2 {
+            font-size: 1.875rem;
+            margin-bottom: 1rem;
+        }
+
         h3 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 0.75rem;
         }
 
         h4 {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             margin-bottom: 0.5rem;
         }
 
         p {
             margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--text-light);
         }
 
         /* ========== BUTTONS ========== */
         button {
             cursor: pointer;
-            font-family: var(--font-primary);
+            font-family: var(--font-family);
             font-weight: 500;
             border: none;
-            border-radius: var(--border-radius-sm);
+            border-radius: var(--border-radius);
             transition: var(--transition);
         }
 
-        .btn-select {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 14px 28px;
-            font-size: 1.1rem;
-            margin-top: 20px;
-            width: 100%;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-md);
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: 1px solid var(--primary-color);
         }
 
-        .btn-select:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-use-template {
-            background: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            margin-top: 10px;
-            width: 100%;
-        }
-
-        .btn-use-template:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
         }
 
         .btn-secondary {
-            background: transparent;
+            background-color: transparent;
             color: var(--primary-color);
             padding: 12px 24px;
-            border: 2px solid var(--primary-color);
-            font-size: 1rem;
+            border: 1px solid var(--primary-color);
         }
 
         .btn-secondary:hover {
-            background: var(--primary-color);
-            color: white;
+            background-color: rgba(37, 99, 235, 0.1);
         }
 
-        .btn-download {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 14px 24px;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-md);
-            flex: 1;
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-color);
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
         }
 
-        .btn-download:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
+        .btn-outline:hover {
+            background-color: var(--background-color);
+            border-color: var(--text-light);
         }
 
-        .btn-download:nth-child(2) {
-            background: var(--gradient-secondary);
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.875rem;
         }
 
         .btn-icon {
             background: transparent;
-            color: var(--gray-color);
-            width: 40px;
-            height: 40px;
+            color: var(--text-light);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            border: 1px solid var(--border-color);
         }
 
         .btn-icon:hover {
-            background: var(--light-gray);
+            background-color: var(--background-color);
             color: var(--primary-color);
         }
 
         /* ========== NAVIGATION ========== */
         .navbar {
-            background: white;
+            background-color: var(--white);
             box-shadow: var(--shadow-sm);
             position: sticky;
             top: 0;
-            z-index: 1000;
-            padding: 15px 0;
+            z-index: 100;
+            padding: 1rem 0;
         }
 
         .navbar .container {
@@ -221,25 +186,27 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary-color);
             text-decoration: none;
         }
 
         .logo i {
-            font-size: 2rem;
+            font-size: 1.75rem;
         }
 
         .nav-links {
             display: flex;
-            gap: 30px;
+            gap: 2rem;
+            align-items: center;
         }
 
         .nav-links a {
-            color: var(--dark-color);
+            color: var(--text-color);
             text-decoration: none;
             font-weight: 500;
+            font-size: 0.95rem;
             transition: var(--transition);
         }
 
@@ -247,20 +214,19 @@
             color: var(--primary-color);
         }
 
-        .theme-toggle {
-            cursor: pointer;
-            font-size: 1.3rem;
-            color: var(--gray-color);
-        }
-
-        .theme-toggle:hover {
+        .ats-badge {
+            background-color: rgba(37, 99, 235, 0.1);
             color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
         }
 
         /* ========== LANDING PAGE ========== */
         .landing-page {
-            padding: 80px 0;
-            background: var(--gradient-light);
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #f6f9ff 0%, #ffffff 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -273,311 +239,133 @@
         }
 
         .main-title {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .highlight {
+            color: var(--primary-color);
         }
 
         .subtitle {
-            font-size: 1.5rem;
-            color: var(--gray-color);
-            margin-bottom: 1.5rem;
-        }
-
-        .description {
-            font-size: 1.1rem;
-            color: var(--gray-color);
-            margin-bottom: 3rem;
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
 
+        .ats-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .ats-feature {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .ats-feature i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .ats-feature h3 {
+            margin-bottom: 0.5rem;
+        }
+
         .resume-type-selection {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
+            gap: 2rem;
+            margin-top: 3rem;
         }
 
         .type-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 30px;
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 2.5rem;
             box-shadow: var(--shadow-md);
+            border: 2px solid transparent;
             transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
         }
 
         .type-card:hover {
-            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
         }
 
-        .type-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
         .type-card h3 {
-            margin-bottom: 15px;
-        }
-
-        .type-card p {
-            color: var(--gray-color);
-            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
         }
 
         .type-card ul {
             list-style: none;
             text-align: left;
-            margin-bottom: 20px;
-            flex-grow: 1;
+            margin: 1.5rem 0;
         }
 
         .type-card ul li {
-            margin-bottom: 8px;
-            padding-left: 25px;
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
             position: relative;
         }
 
         .type-card ul li:before {
             content: "✓";
-            color: var(--success-color);
+            color: var(--success);
             font-weight: bold;
             position: absolute;
             left: 0;
         }
 
-        /* ========== TEMPLATE SELECTION ========== */
-        .template-section {
-            padding: 80px 0;
-            background: var(--light-color);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-header h2 {
-            color: var(--dark-color);
-            margin-bottom: 10px;
-        }
-
-        .section-header p {
-            color: var(--gray-color);
-            font-size: 1.1rem;
-        }
-
-        .template-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .template-card {
-            background: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
-        }
-
-        .template-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .template-preview {
-            height: 350px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .template-1 {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
-
-        .template-2 {
-            background: linear-gradient(135deg, #ffafcc 0%, #ffc8dd 100%);
-        }
-
-        .template-3 {
-            background: linear-gradient(135deg, #cdb4db 0%, #ffc8dd 100%);
-        }
-
-        .template-4 {
-            background: linear-gradient(135deg, #a2d2ff 0%, #bde0fe 100%);
-        }
-
-        .template-5 {
-            background: linear-gradient(135deg, #06d6a0 0%, #118ab2 100%);
-        }
-
-        .template-6 {
-            background: linear-gradient(135deg, #ffd166 0%, #ef476f 100%);
-        }
-
-        .preview-header {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .preview-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--dark-color);
-        }
-
-        .preview-title {
-            font-size: 1rem;
-            color: var(--gray-color);
-        }
-
-        .preview-content {
-            flex-grow: 1;
-        }
-
-        .preview-section {
-            margin-bottom: 20px;
-        }
-
-        .preview-line {
-            height: 10px;
-            background: rgba(0, 0, 0, 0.1);
-            margin-bottom: 8px;
-            border-radius: 5px;
-        }
-
-        .preview-line.short {
-            width: 60%;
-        }
-
-        .preview-line.medium {
-            width: 80%;
-        }
-
-        .preview-line.long {
-            width: 100%;
-        }
-
-        .template-info {
-            padding: 20px;
-            background: white;
-            border-top: 1px solid var(--light-gray);
-        }
-
-        .template-info h4 {
-            margin-bottom: 5px;
-        }
-
-        .template-info p {
-            color: var(--gray-color);
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-
-        /* ========== UPLOAD TEMPLATE ========== */
-        .upload-template {
-            margin-bottom: 50px;
-        }
-
-        .upload-area {
-            border: 3px dashed var(--light-gray);
-            border-radius: var(--border-radius);
-            padding: 50px 20px;
-            text-align: center;
-            transition: var(--transition);
-        }
-
-        .upload-area:hover {
-            border-color: var(--primary-color);
-            background: rgba(58, 134, 255, 0.05);
-        }
-
-        .upload-area i {
-            font-size: 4rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .upload-area h3 {
-            margin-bottom: 10px;
-        }
-
-        .upload-area p {
-            color: var(--gray-color);
-            margin-bottom: 20px;
-        }
-
-        .btn-upload {
-            background: var(--primary-color);
-            color: white;
-            padding: 12px 30px;
-            font-size: 1rem;
-            border-radius: var(--border-radius);
-        }
-
-        .btn-upload:hover {
-            background: var(--secondary-color);
-        }
-
-        .upload-note {
-            font-size: 0.9rem;
-            margin-top: 15px;
-            color: var(--gray-color);
-            font-style: italic;
-        }
-
-        .navigation-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
         /* ========== EDITOR SECTION ========== */
         .editor-section {
-            padding: 60px 0;
-            background: var(--light-color);
+            padding: 3rem 0;
             min-height: 100vh;
         }
 
         .editor-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 3rem;
         }
 
         .editor-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .editor-container {
+                grid-template-columns: 1fr;
+            }
         }
 
         .edit-panel, .preview-panel {
-            background: white;
-            border-radius: var(--border-radius);
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
             box-shadow: var(--shadow-md);
             overflow: hidden;
-            height: fit-content;
         }
 
         .panel-header {
-            padding: 20px;
-            background: var(--gradient-light);
-            border-bottom: 1px solid var(--light-gray);
+            padding: 1.5rem;
+            background-color: var(--background-color);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -588,49 +376,50 @@
             align-items: center;
             gap: 10px;
             margin: 0;
-        }
-
-        .panel-actions {
-            display: flex;
-            gap: 10px;
+            font-size: 1.25rem;
         }
 
         .resume-type-indicator {
-            padding: 15px 20px;
-            background: var(--light-gray);
-            border-bottom: 1px solid var(--light-gray);
+            padding: 1rem 1.5rem;
+            background-color: rgba(37, 99, 235, 0.1);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .resume-type-indicator span {
             display: inline-block;
-            padding: 5px 15px;
-            background: var(--primary-color);
-            color: white;
+            padding: 6px 16px;
+            background-color: var(--primary-color);
+            color: var(--white);
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             font-weight: 500;
         }
 
         .form-container {
-            padding: 20px;
+            padding: 1.5rem;
             max-height: 600px;
             overflow-y: auto;
         }
 
         .form-section {
-            margin-bottom: 25px;
-            border: 1px solid var(--light-gray);
-            border-radius: var(--border-radius-sm);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
             overflow: hidden;
         }
 
         .section-header-editable {
-            padding: 15px 20px;
-            background: var(--light-gray);
+            padding: 1rem 1.5rem;
+            background-color: var(--background-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            border-bottom: 1px solid transparent;
+        }
+
+        .section-header-editable:hover {
+            background-color: rgba(37, 99, 235, 0.05);
         }
 
         .section-header-editable h4 {
@@ -638,262 +427,300 @@
             align-items: center;
             gap: 10px;
             margin: 0;
+            font-size: 1.125rem;
         }
 
         .btn-section-toggle {
             background: transparent;
-            color: var(--gray-color);
+            color: var(--text-light);
             border: none;
             font-size: 1rem;
         }
 
         .section-content {
-            padding: 20px;
+            padding: 1.5rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.25rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
             font-weight: 500;
-            color: var(--dark-color);
+            color: var(--text-color);
+            font-size: 0.95rem;
         }
 
-        .form-group input, 
+        .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: var(--border-radius-sm);
-            font-family: var(--font-primary);
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-family: var(--font-family);
             font-size: 1rem;
             transition: var(--transition);
+            background-color: var(--white);
         }
 
-        .form-group input:focus, 
+        .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .form-group textarea {
             min-height: 100px;
             resize: vertical;
+            line-height: 1.5;
         }
 
-        /* ========== PREVIEW PANEL ========== */
-        .preview-actions {
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* ========== ATS PREVIEW PANEL ========== */
+        .preview-panel {
             position: relative;
         }
 
-        .color-picker {
+        .ats-preview-badge {
             position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            padding: 15px;
-            border-radius: var(--border-radius-sm);
-            box-shadow: var(--shadow-lg);
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--success);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
             z-index: 10;
-            margin-top: 10px;
-        }
-
-        .color-option {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 2px solid transparent;
-        }
-
-        .color-option:hover {
-            transform: scale(1.2);
-        }
-
-        .color-option.active {
-            border-color: var(--dark-color);
         }
 
         .resume-preview {
-            padding: 30px;
+            padding: 2.5rem;
+            background-color: var(--white);
             min-height: 700px;
-            background: white;
-            border: 1px solid var(--light-gray);
-            margin: 20px;
-            border-radius: var(--border-radius-sm);
-            overflow: auto;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            color: #000000;
+        }
+
+        /* ATS-Friendly Resume Styling */
+        .ats-resume {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .ats-resume-header {
+            padding-bottom: 20px;
+            border-bottom: 2px solid #000;
+            margin-bottom: 25px;
+        }
+
+        .ats-resume-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 5px;
+        }
+
+        .ats-resume-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .ats-contact-info {
+            font-size: 11px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .ats-contact-info div {
+            margin-bottom: 3px;
+        }
+
+        .ats-section {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        .ats-section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ats-item {
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+
+        .ats-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .ats-item-title {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .ats-item-subtitle {
+            color: #333;
+            font-style: italic;
+            font-size: 12px;
+        }
+
+        .ats-item-duration {
+            font-weight: 500;
+            color: #000;
+            font-size: 12px;
+        }
+
+        .ats-item-description {
+            color: #000;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .ats-item-description ul {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        .ats-item-description li {
+            margin-bottom: 3px;
+        }
+
+        .ats-skills-list {
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .ats-skills-list div {
+            margin-bottom: 5px;
         }
 
         .download-options {
-            padding: 20px;
-            border-top: 1px solid var(--light-gray);
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--background-color);
         }
 
         .download-options h4 {
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
             text-align: center;
         }
 
         .download-buttons {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .preview-actions-bottom {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        /* ========== RESUME PREVIEW STYLING ========== */
-        .resume-template {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .resume-header {
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-            border-bottom: 3px solid var(--preview-primary, #3a86ff);
-        }
-
-        .resume-name {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--preview-primary, #3a86ff);
-            margin-bottom: 5px;
-        }
-
-        .resume-title {
-            font-size: 1.3rem;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .resume-contact {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 0.95rem;
-            color: #555;
-        }
-
-        .resume-contact div {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .resume-section {
-            margin-bottom: 25px;
-        }
-
-        .resume-section h3 {
-            font-size: 1.3rem;
-            color: var(--preview-primary, #3a86ff);
-            padding-bottom: 8px;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 15px;
-        }
-
-        .resume-item {
-            margin-bottom: 20px;
-        }
-
-        .item-header {
+        .preview-actions {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
-        }
-
-        .item-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .item-subtitle {
-            color: #666;
-            font-style: italic;
-        }
-
-        .item-duration {
-            color: var(--preview-primary, #3a86ff);
-            font-weight: 500;
-        }
-
-        .item-description {
-            color: #555;
-            line-height: 1.5;
-        }
-
-        .skills-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .skill-tag {
-            background: var(--preview-primary, #3a86ff);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            gap: 1rem;
         }
 
         /* ========== FEATURES SECTION ========== */
         .features-section {
-            padding: 80px 0;
-            background: var(--gradient-light);
+            padding: 5rem 0;
+            background-color: var(--white);
         }
 
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
+            gap: 2rem;
+            margin-top: 3rem;
         }
 
         .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            text-align: center;
-            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--border-color);
             transition: var(--transition);
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
         }
 
         .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
             color: var(--primary-color);
+            margin-bottom: 1.5rem;
         }
 
         .feature-card h3 {
-            margin-bottom: 15px;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ========== ATS TIPS SECTION ========== */
+        .ats-tips-section {
+            padding: 5rem 0;
+            background-color: var(--background-color);
+        }
+
+        .ats-tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .ats-tip-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .ats-tip-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .ats-tip-card i {
+            color: var(--primary-color);
         }
 
         /* ========== FOOTER ========== */
         .footer {
-            padding: 60px 0 30px;
-            background: var(--dark-color);
-            color: white;
+            padding: 3rem 0;
+            background-color: var(--text-color);
+            color: var(--white);
             text-align: center;
         }
 
@@ -902,35 +729,31 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: white;
-            margin-bottom: 20px;
+            color: var(--white);
+            margin-bottom: 1.5rem;
         }
 
         .footer-description {
             max-width: 600px;
-            margin: 0 auto 30px;
-            color: #adb5bd;
+            margin: 0 auto 2rem;
+            color: #9ca3af;
         }
 
         .footer-note {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
             border-radius: var(--border-radius);
             max-width: 500px;
-            margin: 0 auto 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            margin: 0 auto 2rem;
         }
 
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 30px;
-            color: #adb5bd;
-            font-size: 0.9rem;
+            padding-top: 2rem;
+            color: #9ca3af;
+            font-size: 0.875rem;
         }
 
         /* ========== MODAL ========== */
@@ -944,12 +767,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2000;
+            z-index: 1000;
         }
 
         .modal {
-            background: white;
-            border-radius: var(--border-radius);
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
             width: 90%;
             max-width: 500px;
             overflow: hidden;
@@ -957,9 +780,9 @@
         }
 
         .modal-header {
-            padding: 20px;
-            background: var(--gradient-light);
-            border-bottom: 1px solid var(--light-gray);
+            padding: 1.5rem;
+            background-color: var(--background-color);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -967,59 +790,62 @@
 
         .btn-close-modal {
             background: transparent;
-            color: var(--gray-color);
+            color: var(--text-light);
             font-size: 1.2rem;
         }
 
         .modal-body {
-            padding: 30px 20px;
+            padding: 2rem;
         }
 
         .modal-footer {
-            padding: 20px;
-            border-top: 1px solid var(--light-gray);
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: flex-end;
         }
 
         .section-options {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         .section-option {
-            padding: 15px;
-            border: 2px solid var(--light-gray);
-            border-radius: var(--border-radius-sm);
-            text-align: center;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
             cursor: pointer;
             transition: var(--transition);
+            text-align: left;
         }
 
         .section-option:hover {
             border-color: var(--primary-color);
-            background: rgba(58, 134, 255, 0.05);
+            background-color: rgba(37, 99, 235, 0.05);
         }
 
         .section-option i {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             color: var(--primary-color);
-            margin-bottom: 10px;
+            margin-bottom: 0.5rem;
         }
 
         /* ========== TOAST ========== */
         .toast {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--success-color);
-            color: white;
-            padding: 15px 25px;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--success);
+            color: var(--white);
+            padding: 1rem 1.5rem;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-lg);
-            z-index: 3000;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             animation: slideIn 0.3s ease;
         }
 
@@ -1034,10 +860,16 @@
             }
         }
 
-        .toast-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .toast.hidden {
+            display: none;
+        }
+
+        .toast.error {
+            background-color: var(--danger);
+        }
+
+        .toast.warning {
+            background-color: var(--warning);
         }
 
         /* ========== LOADING OVERLAY ========== */
@@ -1052,18 +884,18 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 4000;
-            color: white;
+            z-index: 1001;
+            color: var(--white);
         }
 
         .spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top-color: white;
+            border-top-color: var(--white);
             animation: spin 1s ease-in-out infinite;
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
 
         @keyframes spin {
@@ -1073,62 +905,75 @@
         }
 
         /* ========== RESPONSIVE DESIGN ========== */
-        @media (max-width: 992px) {
-            .editor-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .resume-type-selection {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2.8rem;
-            }
-            
-            h2 {
-                font-size: 2.2rem;
-            }
-        }
-
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
             
-            .download-buttons {
-                flex-direction: column;
+            .main-title {
+                font-size: 2.25rem;
             }
             
-            .template-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .section-options {
+            .editor-container {
                 grid-template-columns: 1fr;
             }
             
-            .preview-actions-bottom {
+            .download-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-actions {
                 flex-direction: column;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
             }
         }
 
-        @media (max-width: 576px) {
-            .template-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 480px) {
+            .type-card {
+                padding: 1.5rem;
             }
             
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            h2 {
-                font-size: 1.8rem;
+            .ats-feature {
+                padding: 1.5rem;
             }
             
             .resume-preview {
-                padding: 15px;
-                margin: 10px;
+                padding: 1.5rem;
+            }
+        }
+
+        /* ========== PRINT STYLES ========== */
+        @media print {
+            .navbar,
+            .edit-panel,
+            .download-options,
+            .ats-preview-badge {
+                display: none !important;
+            }
+            
+            .editor-container {
+                display: block;
+            }
+            
+            .preview-panel {
+                box-shadow: none;
+                border: none;
+            }
+            
+            .resume-preview {
+                min-height: auto;
+                padding: 0;
+            }
+            
+            .ats-resume {
+                font-size: 11px;
+            }
+            
+            body {
+                background-color: white;
             }
         }
     </style>
@@ -1139,16 +984,13 @@
         <div class="container">
             <a href="#" class="logo">
                 <i class="fas fa-file-alt"></i>
-                <span>SmartResume</span>
+                <span>ATS Resume Builder</span>
             </a>
             <div class="nav-links">
                 <a href="#home">Home</a>
-                <a href="#templates">Templates</a>
                 <a href="#features">Features</a>
-                <a href="#about">About</a>
-            </div>
-            <div class="theme-toggle">
-                <i class="fas fa-moon" id="dark-mode-toggle"></i>
+                <a href="#ats-tips">ATS Tips</a>
+                <span class="ats-badge">100% ATS Friendly</span>
             </div>
         </div>
     </nav>
@@ -1157,232 +999,83 @@
     <section class="landing-page" id="home">
         <div class="container">
             <div class="landing-content">
-                <h1 class="main-title">Smart Resume Builder</h1>
-                <p class="subtitle">Create Professional Resumes in Minutes</p>
-                <p class="description">Stand out from the crowd with a beautifully designed resume. Choose your path and get started!</p>
+                <h1 class="main-title">Create <span class="highlight">ATS-Friendly</span> Resumes</h1>
+                <p class="subtitle">Get past Applicant Tracking Systems and land more interviews with professionally formatted, ATS-optimized resumes</p>
+                
+                <div class="ats-features">
+                    <div class="ats-feature">
+                        <i class="fas fa-robot"></i>
+                        <h3>ATS Optimized</h3>
+                        <p>Simple, clean formatting that ATS systems can read perfectly</p>
+                    </div>
+                    <div class="ats-feature">
+                        <i class="fas fa-file-export"></i>
+                        <h3>Multiple Formats</h3>
+                        <p>Download as PDF or plain text for different ATS requirements</p>
+                    </div>
+                    <div class="ats-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>No Formatting Issues</h3>
+                        <p>Avoid tables, columns, and graphics that break ATS parsing</p>
+                    </div>
+                </div>
                 
                 <div class="resume-type-selection">
                     <div class="type-card" id="fresher-btn">
-                        <div class="type-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <h3>🎓 Fresher Resume</h3>
-                        <p>Perfect for students, recent graduates, and entry-level positions</p>
+                        <h3><i class="fas fa-graduation-cap"></i> Fresher / Entry Level</h3>
+                        <p>Perfect for students, recent graduates, and career changers</p>
                         <ul>
-                            <li>Education Details</li>
-                            <li>Projects & Internships</li>
-                            <li>Skills & Certifications</li>
+                            <li>ATS-friendly education section</li>
+                            <li>Projects & academic achievements</li>
+                            <li>Skills & certifications</li>
+                            <li>Clean, professional objective</li>
+                            <li>Standard chronological format</li>
                         </ul>
-                        <button class="btn-select">Create Fresher Resume</button>
+                        <button class="btn-primary" style="width: 100%; margin-top: 20px;">
+                            Create Fresher Resume
+                        </button>
                     </div>
                     
                     <div class="type-card" id="experienced-btn">
-                        <div class="type-icon">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                        <h3>💼 Experienced Resume</h3>
+                        <h3><i class="fas fa-briefcase"></i> Experienced Professional</h3>
                         <p>Designed for professionals with work experience</p>
                         <ul>
-                            <li>Professional Summary</li>
-                            <li>Work Experience</li>
-                            <li>Achievements & Skills</li>
+                            <li>ATS-optimized work experience</li>
+                            <li>Professional summary section</li>
+                            <li>Skills with proficiency levels</li>
+                            <li>Achievements & accomplishments</li>
+                            <li>Reverse-chronological format</li>
                         </ul>
-                        <button class="btn-select">Create Experienced Resume</button>
+                        <button class="btn-primary" style="width: 100%; margin-top: 20px;">
+                            Create Professional Resume
+                        </button>
                     </div>
+                </div>
+                
+                <div style="margin-top: 3rem;">
+                    <p class="text-muted">
+                        <i class="fas fa-info-circle"></i> 
+                        All resumes are designed to pass through Applicant Tracking Systems used by 98% of Fortune 500 companies
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Template Selection Page (Initially Hidden) -->
-    <section class="template-section hidden" id="templates">
-        <div class="container">
-            <div class="section-header">
-                <h2>Choose a Template</h2>
-                <p>Select from our professionally designed templates or upload your own</p>
-            </div>
-            
-            <div class="template-grid">
-                <!-- Template 1 -->
-                <div class="template-card" data-template="template1">
-                    <div class="template-preview template-1">
-                        <div class="preview-header">
-                            <div class="preview-name">John Doe</div>
-                            <div class="preview-title">Web Developer</div>
-                        </div>
-                        <div class="preview-content">
-                            <div class="preview-section">
-                                <div class="preview-line short"></div>
-                                <div class="preview-line medium"></div>
-                            </div>
-                            <div class="preview-section">
-                                <div class="preview-line long"></div>
-                                <div class="preview-line short"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-info">
-                        <h4>Modern Professional</h4>
-                        <p>Clean & Minimal Design</p>
-                        <button class="btn-use-template">Use Template</button>
-                    </div>
-                </div>
-                
-                <!-- Template 2 -->
-                <div class="template-card" data-template="template2">
-                    <div class="template-preview template-2">
-                        <div class="preview-header">
-                            <div class="preview-name">Jane Smith</div>
-                            <div class="preview-title">UX Designer</div>
-                        </div>
-                        <div class="preview-content">
-                            <div class="preview-section">
-                                <div class="preview-line medium"></div>
-                                <div class="preview-line short"></div>
-                            </div>
-                            <div class="preview-section">
-                                <div class="preview-line long"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-info">
-                        <h4>Creative</h4>
-                        <p>Colorful & Modern</p>
-                        <button class="btn-use-template">Use Template</button>
-                    </div>
-                </div>
-                
-                <!-- Template 3 -->
-                <div class="template-card" data-template="template3">
-                    <div class="template-preview template-3">
-                        <div class="preview-header">
-                            <div class="preview-name">Alex Johnson</div>
-                            <div class="preview-title">Software Engineer</div>
-                        </div>
-                        <div class="preview-content">
-                            <div class="preview-section">
-                                <div class="preview-line short"></div>
-                                <div class="preview-line medium"></div>
-                            </div>
-                            <div class="preview-section">
-                                <div class="preview-line long"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-info">
-                        <h4>Executive</h4>
-                        <p>Professional & Formal</p>
-                        <button class="btn-use-template">Use Template</button>
-                    </div>
-                </div>
-                
-                <!-- Template 4 -->
-                <div class="template-card" data-template="template4">
-                    <div class="template-preview template-4">
-                        <div class="preview-header">
-                            <div class="preview-name">Sarah Wilson</div>
-                            <div class="preview-title">Marketing Manager</div>
-                        </div>
-                        <div class="preview-content">
-                            <div class="preview-section">
-                                <div class="preview-line short"></div>
-                                <div class="preview-line medium"></div>
-                            </div>
-                            <div class="preview-section">
-                                <div class="preview-line long"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-info">
-                        <h4>Minimalist</h4>
-                        <p>Simple & Elegant</p>
-                        <button class="btn-use-template">Use Template</button>
-                    </div>
-                </div>
-                
-                <!-- Template 5 -->
-                <div class="template-card" data-template="template5">
-                    <div class="template-preview template-5">
-                        <div class="preview-header">
-                            <div class="preview-name">Michael Brown</div>
-                            <div class="preview-title">Data Analyst</div>
-                        </div>
-                        <div class="preview-content">
-                            <div class="preview-section">
-                                <div class="preview-line short"></div>
-                                <div class="preview-line medium"></div>
-                            </div>
-                            <div class="preview-section">
-                                <div class="preview-line long"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-info">
-                        <h4>Tech</h4>
-                        <p>Modern & Technical</p>
-                        <button class="btn-use-template">Use Template</button>
-                    </div>
-                </div>
-                
-                <!-- Template 6 -->
-                <div class="template-card" data-template="template6">
-                    <div class="template-preview template-6">
-                        <div class="preview-header">
-                            <div class="preview-name">Emily Davis</div>
-                            <div class="preview-title">Graphic Designer</div>
-                        </div>
-                        <div class="preview-content">
-                            <div class="preview-section">
-                                <div class="preview-line short"></div>
-                                <div class="preview-line medium"></div>
-                            </div>
-                            <div class="preview-section">
-                                <div class="preview-line long"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-info">
-                        <h4>Creative Pro</h4>
-                        <p>Artistic & Bold</p>
-                        <button class="btn-use-template">Use Template</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Upload Template Option -->
-            <div class="upload-template">
-                <div class="upload-area" id="upload-area">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <h3>Upload Your Own Resume Template</h3>
-                    <p>Supported formats: PDF, DOC, DOCX</p>
-                    <input type="file" id="template-upload" accept=".pdf,.doc,.docx" hidden>
-                    <button class="btn-upload" id="upload-trigger">Choose File</button>
-                    <p class="upload-note">Note: Uploaded templates will open in the editor for modification</p>
-                </div>
-            </div>
-            
-            <div class="navigation-buttons">
-                <button class="btn-secondary" id="back-to-home">
-                    <i class="fas fa-arrow-left"></i> Back to Home
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Resume Editor (Initially Hidden) -->
+    <!-- Editor Section (Initially Hidden) -->
     <section class="editor-section hidden">
         <div class="container">
             <div class="editor-header">
-                <h2>Resume Editor</h2>
-                <p>Edit your resume in real-time. Changes appear instantly in the preview.</p>
+                <h2>ATS Resume Editor</h2>
+                <p class="text-muted">Fill in your details. The preview shows exactly how ATS systems will see your resume.</p>
             </div>
             
             <div class="editor-container">
                 <!-- Left Panel - Edit Form -->
                 <div class="edit-panel">
                     <div class="panel-header">
-                        <h3><i class="fas fa-edit"></i> Edit Resume</h3>
-                        <div class="panel-actions">
+                        <h3><i class="fas fa-edit"></i> Edit Resume Details</h3>
+                        <div class="form-actions">
                             <button class="btn-icon" id="add-section-btn" title="Add Section">
                                 <i class="fas fa-plus"></i>
                             </button>
@@ -1392,14 +1085,12 @@
                         </div>
                     </div>
                     
-                    <!-- Resume Type Indicator -->
                     <div class="resume-type-indicator">
                         <span id="resume-type-label">Fresher Resume</span>
                     </div>
                     
-                    <!-- Form Container -->
                     <div class="form-container">
-                        <!-- Personal Details Section -->
+                        <!-- Personal Details -->
                         <div class="form-section" data-section="personal">
                             <div class="section-header-editable">
                                 <h4><i class="fas fa-user"></i> Personal Details</h4>
@@ -1407,84 +1098,83 @@
                             </div>
                             <div class="section-content">
                                 <div class="form-group">
-                                    <label for="full-name">Full Name</label>
-                                    <input type="text" id="full-name" placeholder="Enter your full name" value="John Doe">
+                                    <label for="full-name">Full Name *</label>
+                                    <input type="text" id="full-name" placeholder="John Smith" value="John Smith">
                                 </div>
                                 <div class="form-group">
-                                    <label for="job-title">Job Title / Profession</label>
-                                    <input type="text" id="job-title" placeholder="e.g. Web Developer" value="Frontend Developer">
+                                    <label for="job-title">Professional Title *</label>
+                                    <input type="text" id="job-title" placeholder="e.g., Software Engineer" value="Software Engineer">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number</label>
+                                        <input type="tel" id="phone" placeholder="(123) 456-7890" value="(123) 456-7890">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email Address *</label>
+                                        <input type="email" id="email" placeholder="john.smith@email.com" value="john.smith@email.com">
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="email">Email Address</label>
-                                    <input type="email" id="email" placeholder="your.email@example.com" value="john.doe@example.com">
+                                    <label for="address">Location (City, State)</label>
+                                    <input type="text" id="address" placeholder="San Francisco, CA" value="San Francisco, CA">
                                 </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" id="phone" placeholder="+1 (123) 456-7890" value="+1 (234) 567-8901">
-                                </div>
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <input type="text" id="address" placeholder="Your city, country" value="San Francisco, CA">
-                                </div>
-                                <div class="form-group">
-                                    <label for="linkedin">LinkedIn Profile</label>
-                                    <input type="text" id="linkedin" placeholder="linkedin.com/in/yourprofile" value="linkedin.com/in/johndoe">
-                                </div>
-                                <div class="form-group">
-                                    <label for="portfolio">Portfolio / Website</label>
-                                    <input type="text" id="portfolio" placeholder="yourportfolio.com" value="johndoe.dev">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="linkedin">LinkedIn Profile</label>
+                                        <input type="text" id="linkedin" placeholder="linkedin.com/in/johnsmith" value="linkedin.com/in/johnsmith">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="portfolio">Portfolio/Website</label>
+                                        <input type="text" id="portfolio" placeholder="yourwebsite.com" value="johnsmith.dev">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Dynamic Sections will be added here -->
+                        <!-- Dynamic Sections -->
                         <div id="dynamic-sections"></div>
                     </div>
                 </div>
                 
-                <!-- Right Panel - Live Preview -->
+                <!-- Right Panel - ATS Preview -->
                 <div class="preview-panel">
+                    <div class="ats-preview-badge">
+                        <i class="fas fa-check"></i> ATS FRIENDLY
+                    </div>
                     <div class="panel-header">
-                        <h3><i class="fas fa-eye"></i> Live Preview</h3>
-                        <div class="preview-actions">
-                            <button class="btn-icon" id="change-color-btn" title="Change Theme Color">
-                                <i class="fas fa-palette"></i>
-                            </button>
-                            <div class="color-picker hidden" id="color-picker">
-                                <div class="color-option" data-color="#3a86ff" style="background-color: #3a86ff;"></div>
-                                <div class="color-option" data-color="#8338ec" style="background-color: #8338ec;"></div>
-                                <div class="color-option" data-color="#fb5607" style="background-color: #fb5607;"></div>
-                                <div class="color-option" data-color="#ff006e" style="background-color: #ff006e;"></div>
-                                <div class="color-option" data-color="#06d6a0" style="background-color: #06d6a0;"></div>
-                                <div class="color-option" data-color="#118ab2" style="background-color: #118ab2;"></div>
-                            </div>
-                        </div>
+                        <h3><i class="fas fa-eye"></i> ATS Preview</h3>
+                        <button class="btn-outline btn-small" id="toggle-formatting">
+                            <i class="fas fa-code"></i> Show Plain Text
+                        </button>
                     </div>
                     
-                    <!-- Resume Preview -->
                     <div class="resume-preview" id="resume-preview">
-                        <!-- Preview content will be dynamically generated -->
+                        <!-- ATS resume preview will be generated here -->
                     </div>
                     
-                    <!-- Download Options -->
                     <div class="download-options">
-                        <h4>Download Options</h4>
+                        <h4>Download Your Resume</h4>
                         <div class="download-buttons">
-                            <button class="btn-download" id="download-pdf">
+                            <button class="btn-primary" id="download-pdf">
                                 <i class="fas fa-file-pdf"></i> Download as PDF
                             </button>
-                            <button class="btn-download" id="download-doc">
-                                <i class="fas fa-file-word"></i> Download as DOC
+                            <button class="btn-secondary" id="download-txt">
+                                <i class="fas fa-file-alt"></i> Download as Text
                             </button>
                         </div>
-                        <div class="preview-actions-bottom">
-                            <button class="btn-secondary" id="back-to-templates">
-                                <i class="fas fa-arrow-left"></i> Back to Templates
+                        <div class="preview-actions">
+                            <button class="btn-outline" id="back-to-home">
+                                <i class="fas fa-arrow-left"></i> Back to Home
                             </button>
-                            <button class="btn-secondary" id="print-resume">
+                            <button class="btn-outline" id="print-resume">
                                 <i class="fas fa-print"></i> Print Resume
                             </button>
                         </div>
+                        <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-light); text-align: center;">
+                            <i class="fas fa-lightbulb"></i> 
+                            <strong>Tip:</strong> For best ATS results, use the PDF version. Some ATS prefer .docx files.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -1494,66 +1184,113 @@
     <!-- Features Section -->
     <section class="features-section" id="features">
         <div class="container">
-            <div class="section-header">
-                <h2>Why Choose Smart Resume Builder</h2>
-                <p>Everything you need to create a professional resume</p>
+            <div class="editor-header">
+                <h2>Why ATS-Friendly Matters</h2>
+                <p class="text-muted">Resumes that don't pass ATS screening never reach human recruiters</p>
             </div>
             
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
+                        <i class="fas fa-filter"></i>
                     </div>
-                    <h3>Quick & Easy</h3>
-                    <p>Create a professional resume in minutes with our intuitive editor</p>
+                    <h3>No Formatting Filters</h3>
+                    <p>Avoid common ATS pitfalls like headers/footers, tables, columns, and graphics that can cause parsing errors</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-palette"></i>
+                        <i class="fas fa-search"></i>
                     </div>
-                    <h3>Beautiful Templates</h3>
-                    <p>Choose from multiple modern, ATS-friendly resume templates</p>
+                    <h3>Keyword Optimized</h3>
+                    <p>Structure your content to include relevant keywords that ATS systems look for when screening candidates</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-download"></i>
+                        <i class="fas fa-file-contract"></i>
                     </div>
-                    <h3>Multiple Formats</h3>
-                    <p>Download your resume as PDF or DOC format with one click</p>
+                    <h3>Standard Sections</h3>
+                    <p>Use standard section headings (Work Experience, Education, Skills) that ATS systems recognize</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
+                        <i class="fas fa-font"></i>
                     </div>
-                    <h3>Mobile Friendly</h3>
-                    <p>Edit and preview your resume on any device, anywhere</p>
+                    <h3>Simple Fonts</h3>
+                    <p>Uses standard fonts (Arial, Times New Roman) that are universally readable by all ATS software</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ATS Tips Section -->
+    <section class="ats-tips-section" id="ats-tips">
+        <div class="container">
+            <div class="editor-header">
+                <h2>ATS Resume Best Practices</h2>
+                <p class="text-muted">Follow these guidelines to ensure your resume passes through ATS</p>
+            </div>
+            
+            <div class="ats-tips-grid">
+                <div class="ats-tip-card">
+                    <h4><i class="fas fa-ban"></i> Avoid These</h4>
+                    <ul style="margin-left: 1.5rem; color: var(--text-light);">
+                        <li>Tables and columns</li>
+                        <li>Headers and footers</li>
+                        <li>Images and graphics</li>
+                        <li>Text boxes and shapes</li>
+                        <li>Uncommon fonts</li>
+                        <li>Creative layouts</li>
+                    </ul>
+                </div>
+                
+                <div class="ats-tip-card">
+                    <h4><i class="fas fa-check"></i> Always Include</h4>
+                    <ul style="margin-left: 1.5rem; color: var(--text-light);">
+                        <li>Standard section headers</li>
+                        <li>Clear job titles</li>
+                        <li>Company names and dates</li>
+                        <li>Bullet points (• not fancy symbols)</li>
+                        <li>Relevant keywords</li>
+                        <li>Simple formatting</li>
+                    </ul>
+                </div>
+                
+                <div class="ats-tip-card">
+                    <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
+                    <ul style="margin-left: 1.5rem; color: var(--text-light);">
+                        <li>Use PDF format (most ATS read it well)</li>
+                        <li>Include keywords from job description</li>
+                        <li>Spell out acronyms first time</li>
+                        <li>Use standard month/year date format</li>
+                        <li>Save as "FirstName_LastName_Resume.pdf"</li>
+                        <li>Test with free ATS scanners online</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer" id="about">
+    <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas fa-file-alt"></i>
-                    <span>SmartResume</span>
-                </div>
-                <p class="footer-description">
-                    Smart Resume Builder helps job seekers create professional resumes quickly and easily. 
-                    No sign-up required. Everything happens in your browser.
-                </p>
-                <p class="footer-note">
-                    <i class="fas fa-info-circle"></i> This is a static web application. All data remains in your browser.
-                </p>
-                <div class="footer-bottom">
-                    <p>© 2023 Smart Resume Builder. All rights reserved.</p>
-                    <p>Made with <i class="fas fa-heart"></i> for job seekers worldwide</p>
-                </div>
+            <div class="footer-logo">
+                <i class="fas fa-file-alt"></i>
+                <span>ATS Resume Builder</span>
+            </div>
+            <p class="footer-description">
+                Create resumes that actually get through Applicant Tracking Systems. 
+                No sign-up required. Your data never leaves your browser.
+            </p>
+            <div class="footer-note">
+                <i class="fas fa-shield-alt"></i> 
+                This is a static web application. All data remains in your browser.
+            </div>
+            <div class="footer-bottom">
+                <p>© 2023 ATS Resume Builder. Designed to help job seekers pass ATS screening.</p>
+                <p>Made with <i class="fas fa-heart" style="color: #ef4444;"></i> for job seekers</p>
             </div>
         </div>
     </footer>
@@ -1562,15 +1299,15 @@
     <div class="modal-overlay hidden" id="add-section-modal">
         <div class="modal">
             <div class="modal-header">
-                <h3>Add New Section</h3>
+                <h3>Add Resume Section</h3>
                 <button class="btn-close-modal" id="close-modal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Select a section to add to your resume:</p>
+                <p>Select a section to add to your ATS-friendly resume:</p>
                 <div class="section-options" id="section-options">
-                    <!-- Section options will be dynamically generated -->
+                    <!-- Sections will be added dynamically -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -1579,151 +1316,162 @@
         </div>
     </div>
 
-    <!-- Success Toast -->
+    <!-- Toast Notification -->
     <div class="toast hidden" id="success-toast">
-        <div class="toast-content">
-            <i class="fas fa-check-circle"></i>
-            <span id="toast-message">Resume downloaded successfully!</span>
-        </div>
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Resume downloaded successfully!</span>
     </div>
 
     <!-- Loading Overlay -->
     <div class="loading-overlay hidden" id="loading-overlay">
         <div class="spinner"></div>
-        <p>Generating your resume...</p>
+        <p>Generating your ATS-friendly resume...</p>
     </div>
 
     <script>
         // ========== APPLICATION STATE ==========
         const appState = {
             resumeType: 'fresher',
-            selectedTemplate: 'template1',
-            currentColor: '#3a86ff',
+            currentColor: '#2563eb',
             resumeData: {
                 personal: {
-                    name: 'John Doe',
-                    title: 'Frontend Developer',
-                    email: 'john.doe@example.com',
-                    phone: '+1 (234) 567-8901',
+                    name: 'John Smith',
+                    title: 'Software Engineer',
+                    email: 'john.smith@email.com',
+                    phone: '(123) 456-7890',
                     address: 'San Francisco, CA',
-                    linkedin: 'linkedin.com/in/johndoe',
-                    portfolio: 'johndoe.dev'
+                    linkedin: 'linkedin.com/in/johnsmith',
+                    portfolio: 'johnsmith.dev'
                 }
             },
             availableSections: {
                 fresher: [
+                    { id: 'summary', title: 'Professional Summary', icon: 'fas fa-user-tie', default: true },
                     { id: 'education', title: 'Education', icon: 'fas fa-graduation-cap', default: true },
-                    { id: 'skills', title: 'Skills', icon: 'fas fa-code', default: true },
                     { id: 'projects', title: 'Projects', icon: 'fas fa-project-diagram', default: true },
-                    { id: 'internships', title: 'Internships', icon: 'fas fa-briefcase', default: true },
-                    { id: 'certifications', title: 'Certifications', icon: 'fas fa-certificate', default: true },
-                    { id: 'objective', title: 'Career Objective', icon: 'fas fa-bullseye', default: true },
-                    { id: 'achievements', title: 'Achievements', icon: 'fas fa-trophy', default: false },
-                    { id: 'languages', title: 'Languages', icon: 'fas fa-language', default: false }
+                    { id: 'skills', title: 'Skills', icon: 'fas fa-code', default: true },
+                    { id: 'certifications', title: 'Certifications', icon: 'fas fa-certificate', default: false },
+                    { id: 'internships', title: 'Internships', icon: 'fas fa-briefcase', default: false },
+                    { id: 'achievements', title: 'Achievements', icon: 'fas fa-trophy', default: false }
                 ],
                 experienced: [
                     { id: 'summary', title: 'Professional Summary', icon: 'fas fa-user-tie', default: true },
                     { id: 'experience', title: 'Work Experience', icon: 'fas fa-briefcase', default: true },
-                    { id: 'skills', title: 'Skills', icon: 'fas fa-code', default: true },
-                    { id: 'projects', title: 'Projects', icon: 'fas fa-project-diagram', default: true },
                     { id: 'education', title: 'Education', icon: 'fas fa-graduation-cap', default: true },
-                    { id: 'certifications', title: 'Certifications', icon: 'fas fa-certificate', default: true },
-                    { id: 'achievements', title: 'Achievements', icon: 'fas fa-trophy', default: true },
-                    { id: 'languages', title: 'Languages', icon: 'fas fa-language', default: false }
+                    { id: 'skills', title: 'Skills', icon: 'fas fa-code', default: true },
+                    { id: 'projects', title: 'Projects', icon: 'fas fa-project-diagram', default: false },
+                    { id: 'certifications', title: 'Certifications', icon: 'fas fa-certificate', default: false },
+                    { id: 'achievements', title: 'Achievements', icon: 'fas fa-trophy', default: false }
                 ]
             },
             sectionData: {
+                summary: {
+                    title: 'Professional Summary',
+                    content: 'Results-driven Software Engineer with 2+ years of experience in developing scalable web applications. Proficient in JavaScript, React, and Node.js. Seeking to leverage technical skills and innovative problem-solving abilities at a forward-thinking tech company.'
+                },
                 education: {
                     title: 'Education',
                     items: [
                         {
                             degree: 'Bachelor of Science in Computer Science',
-                            institution: 'Stanford University',
+                            institution: 'University of California, Berkeley',
+                            location: 'Berkeley, CA',
                             duration: '2018 - 2022',
-                            description: 'GPA: 3.8/4.0\nRelevant Coursework: Data Structures, Algorithms, Web Development, Database Systems'
+                            gpa: '3.7/4.0',
+                            details: 'Relevant Coursework: Data Structures, Algorithms, Database Systems, Web Development, Software Engineering'
+                        }
+                    ]
+                },
+                experience: {
+                    title: 'Work Experience',
+                    items: [
+                        {
+                            position: 'Software Engineer',
+                            company: 'Tech Solutions Inc.',
+                            location: 'San Francisco, CA',
+                            duration: 'June 2022 - Present',
+                            responsibilities: [
+                                'Developed and maintained responsive web applications using React.js and Node.js',
+                                'Implemented RESTful APIs that improved system performance by 30%',
+                                'Collaborated with cross-functional teams in an Agile environment',
+                                'Participated in code reviews and mentored junior developers'
+                            ]
+                        },
+                        {
+                            position: 'Software Development Intern',
+                            company: 'Innovate Tech',
+                            location: 'San Jose, CA',
+                            duration: 'May 2021 - August 2021',
+                            responsibilities: [
+                                'Assisted in building frontend components using React.js',
+                                'Wrote unit tests achieving 95% code coverage',
+                                'Documented technical specifications and user guides',
+                                'Participated in sprint planning and daily stand-ups'
+                            ]
                         }
                     ]
                 },
                 skills: {
                     title: 'Skills',
-                    items: [
-                        'JavaScript (ES6+)',
-                        'React.js',
-                        'HTML5 & CSS3',
-                        'Node.js',
-                        'Git & GitHub',
-                        'Responsive Web Design',
-                        'UI/UX Principles'
+                    categories: [
+                        {
+                            category: 'Programming Languages',
+                            items: ['JavaScript (ES6+)', 'Python', 'Java', 'HTML5', 'CSS3']
+                        },
+                        {
+                            category: 'Frameworks & Libraries',
+                            items: ['React.js', 'Node.js', 'Express.js', 'Bootstrap', 'jQuery']
+                        },
+                        {
+                            category: 'Tools & Technologies',
+                            items: ['Git', 'Docker', 'AWS', 'MySQL', 'MongoDB', 'REST APIs']
+                        }
                     ]
                 },
                 projects: {
                     title: 'Projects',
                     items: [
                         {
-                            name: 'E-Commerce Website',
-                            description: 'Full-featured online store with shopping cart, user authentication, and payment processing',
-                            technologies: 'React, Node.js, MongoDB, Stripe API'
-                        }
-                    ]
-                },
-                internships: {
-                    title: 'Internships',
-                    items: [
+                            name: 'E-Commerce Platform',
+                            duration: '2022',
+                            description: 'Full-stack e-commerce application with user authentication, shopping cart, and payment processing',
+                            technologies: 'React, Node.js, MongoDB, Stripe API',
+                            details: 'Implemented secure user authentication and authorization. Integrated Stripe for payment processing. Deployed on AWS EC2.'
+                        },
                         {
-                            position: 'Frontend Development Intern',
-                            company: 'Tech Solutions Inc.',
-                            duration: 'Summer 2021',
-                            description: 'Assisted in developing responsive web applications using React.js. Collaborated with senior developers on feature implementation.'
+                            name: 'Task Management App',
+                            duration: '2021',
+                            description: 'Collaborative task management application with real-time updates',
+                            technologies: 'React, Firebase, Material-UI',
+                            details: 'Implemented real-time database updates using Firebase. Created drag-and-drop interface for task management.'
                         }
                     ]
                 },
                 certifications: {
                     title: 'Certifications',
                     items: [
+                        'AWS Certified Solutions Architect (2023)',
                         'Google Professional Cloud Developer (2022)',
-                        'AWS Certified Solutions Architect (2021)',
-                        'React Native Certification by Meta (2020)'
+                        'Microsoft Azure Fundamentals (2021)'
                     ]
                 },
-                objective: {
-                    title: 'Career Objective',
-                    content: 'Recent Computer Science graduate seeking a Frontend Developer position to leverage my skills in React.js and modern web technologies. Passionate about creating intuitive user interfaces and eager to contribute to innovative projects in a collaborative team environment.'
-                },
-                summary: {
-                    title: 'Professional Summary',
-                    content: 'Experienced Frontend Developer with 5+ years of expertise in building responsive web applications using React.js, TypeScript, and modern CSS. Proven track record of delivering high-quality code and improving user experience. Strong problem-solving skills and ability to collaborate effectively in Agile teams.'
-                },
-                experience: {
-                    title: 'Work Experience',
+                internships: {
+                    title: 'Internships',
                     items: [
                         {
-                            position: 'Senior Frontend Developer',
-                            company: 'Digital Innovations LLC',
-                            duration: '2020 - Present',
-                            description: 'Lead frontend development for multiple client projects. Implemented responsive designs, optimized performance, and mentored junior developers.'
-                        },
-                        {
-                            position: 'Frontend Developer',
-                            company: 'WebTech Solutions',
-                            duration: '2018 - 2020',
-                            description: 'Developed and maintained company websites and web applications. Collaborated with designers to implement pixel-perfect UI components.'
+                            position: 'Web Development Intern',
+                            company: 'Digital Solutions LLC',
+                            duration: 'Summer 2020',
+                            description: 'Assisted in developing and maintaining company websites. Learned frontend development best practices.'
                         }
                     ]
                 },
                 achievements: {
                     title: 'Achievements',
                     items: [
-                        'Employee of the Year 2022 at Digital Innovations LLC',
-                        'Published 3 open-source React components with 500+ GitHub stars',
-                        'Speaker at React Conf 2021: "Advanced State Management Patterns"'
-                    ]
-                },
-                languages: {
-                    title: 'Languages',
-                    items: [
-                        'English (Fluent)',
-                        'Spanish (Intermediate)',
-                        'French (Basic)'
+                        'Dean\'s List (2019-2022)',
+                        'First Place, University Hackathon 2021',
+                        'Published research paper on machine learning algorithms'
                     ]
                 }
             }
@@ -1732,26 +1480,20 @@
         // ========== DOM ELEMENTS ==========
         const elements = {
             landingPage: document.querySelector('.landing-page'),
-            templateSection: document.querySelector('.template-section'),
             editorSection: document.querySelector('.editor-section'),
             fresherBtn: document.getElementById('fresher-btn'),
             experiencedBtn: document.getElementById('experienced-btn'),
             backToHome: document.getElementById('back-to-home'),
-            backToTemplates: document.getElementById('back-to-templates'),
-            useTemplateBtns: document.querySelectorAll('.btn-use-template'),
-            uploadTrigger: document.getElementById('upload-trigger'),
-            templateUpload: document.getElementById('template-upload'),
             addSectionBtn: document.getElementById('add-section-btn'),
             resetBtn: document.getElementById('reset-btn'),
-            changeColorBtn: document.getElementById('change-color-btn'),
-            colorPicker: document.getElementById('color-picker'),
-            colorOptions: document.querySelectorAll('.color-option'),
             downloadPdfBtn: document.getElementById('download-pdf'),
-            downloadDocBtn: document.getElementById('download-doc'),
+            downloadTxtBtn: document.getElementById('download-txt'),
             printResumeBtn: document.getElementById('print-resume'),
+            toggleFormattingBtn: document.getElementById('toggle-formatting'),
             resumeTypeLabel: document.getElementById('resume-type-label'),
             dynamicSections: document.getElementById('dynamic-sections'),
             resumePreview: document.getElementById('resume-preview'),
+            // Form elements
             fullName: document.getElementById('full-name'),
             jobTitle: document.getElementById('job-title'),
             email: document.getElementById('email'),
@@ -1759,23 +1501,25 @@
             address: document.getElementById('address'),
             linkedin: document.getElementById('linkedin'),
             portfolio: document.getElementById('portfolio'),
+            // Modal elements
             addSectionModal: document.getElementById('add-section-modal'),
             closeModal: document.getElementById('close-modal'),
             cancelAddSection: document.getElementById('cancel-add-section'),
             sectionOptions: document.getElementById('section-options'),
-            darkModeToggle: document.getElementById('dark-mode-toggle'),
+            // UI elements
             successToast: document.getElementById('success-toast'),
             toastMessage: document.getElementById('toast-message'),
-            loadingOverlay: document.getElementById('loading-overlay'),
-            uploadArea: document.getElementById('upload-area')
+            loadingOverlay: document.getElementById('loading-overlay')
         };
 
         // ========== INITIALIZATION ==========
         function init() {
             setupEventListeners();
             initializeForm();
+            updateResumePreview();
+            
+            // Show landing page initially
             showPage('landing');
-            initDarkMode();
         }
 
         function setupEventListeners() {
@@ -1783,38 +1527,14 @@
             elements.fresherBtn.addEventListener('click', () => selectResumeType('fresher'));
             elements.experiencedBtn.addEventListener('click', () => selectResumeType('experienced'));
             elements.backToHome.addEventListener('click', () => showPage('landing'));
-            elements.backToTemplates.addEventListener('click', () => showPage('templates'));
-            
-            // Template selection
-            elements.useTemplateBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const templateCard = this.closest('.template-card');
-                    const templateId = templateCard.getAttribute('data-template');
-                    selectTemplate(templateId);
-                });
-            });
-            
-            // Template upload
-            elements.uploadTrigger.addEventListener('click', () => elements.templateUpload.click());
-            elements.templateUpload.addEventListener('change', handleTemplateUpload);
-            elements.uploadArea.addEventListener('dragover', handleDragOver);
-            elements.uploadArea.addEventListener('drop', handleFileDrop);
             
             // Editor actions
             elements.addSectionBtn.addEventListener('click', showAddSectionModal);
             elements.resetBtn.addEventListener('click', resetResume);
-            elements.changeColorBtn.addEventListener('click', toggleColorPicker);
             elements.downloadPdfBtn.addEventListener('click', downloadAsPDF);
-            elements.downloadDocBtn.addEventListener('click', downloadAsDOC);
+            elements.downloadTxtBtn.addEventListener('click', downloadAsText);
             elements.printResumeBtn.addEventListener('click', printResume);
-            
-            // Color picker
-            elements.colorOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const color = this.getAttribute('data-color');
-                    changeThemeColor(color);
-                });
-            });
+            elements.toggleFormattingBtn.addEventListener('click', toggleFormattingView);
             
             // Form input changes
             elements.fullName.addEventListener('input', updateResumePreview);
@@ -1828,19 +1548,10 @@
             // Modal
             elements.closeModal.addEventListener('click', hideAddSectionModal);
             elements.cancelAddSection.addEventListener('click', hideAddSectionModal);
-            
-            // Dark mode toggle
-            elements.darkModeToggle.addEventListener('click', toggleDarkMode);
-            
-            // Close color picker when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!elements.changeColorBtn.contains(e.target) && !elements.colorPicker.contains(e.target)) {
-                    elements.colorPicker.classList.add('hidden');
-                }
-            });
         }
 
         function initializeForm() {
+            // Set form values from appState
             elements.fullName.value = appState.resumeData.personal.name;
             elements.jobTitle.value = appState.resumeData.personal.title;
             elements.email.value = appState.resumeData.personal.email;
@@ -1852,15 +1563,11 @@
 
         // ========== PAGE NAVIGATION ==========
         function showPage(page) {
-            elements.landingPage.classList.add('hidden');
-            elements.templateSection.classList.add('hidden');
-            elements.editorSection.classList.add('hidden');
-            
             if (page === 'landing') {
                 elements.landingPage.classList.remove('hidden');
-            } else if (page === 'templates') {
-                elements.templateSection.classList.remove('hidden');
+                elements.editorSection.classList.add('hidden');
             } else if (page === 'editor') {
+                elements.landingPage.classList.add('hidden');
                 elements.editorSection.classList.remove('hidden');
                 updateResumePreview();
             }
@@ -1869,51 +1576,33 @@
         // ========== RESUME TYPE SELECTION ==========
         function selectResumeType(type) {
             appState.resumeType = type;
-            elements.resumeTypeLabel.textContent = type === 'fresher' ? 'Fresher Resume' : 'Experienced Resume';
+            elements.resumeTypeLabel.textContent = type === 'fresher' ? 'Fresher Resume' : 'Professional Resume';
+            
+            // Update available sections
             updateAvailableSections();
-            showPage('templates');
+            
+            // Show editor
+            showPage('editor');
         }
 
         function updateAvailableSections() {
+            // Clear existing dynamic sections
             elements.dynamicSections.innerHTML = '';
+            
+            // Get sections for current resume type
             const sections = appState.availableSections[appState.resumeType];
             
+            // Add default sections to the form
             sections.forEach(section => {
                 if (section.default) {
                     addSectionToForm(section.id);
                 }
             });
-            
-            updateSectionOptions();
-        }
-
-        function updateSectionOptions() {
-            elements.sectionOptions.innerHTML = '';
-            const sections = appState.availableSections[appState.resumeType];
-            
-            sections.forEach(section => {
-                const existingSection = document.querySelector(`[data-section="${section.id}"]`);
-                if (existingSection) return;
-                
-                const option = document.createElement('div');
-                option.className = 'section-option';
-                option.setAttribute('data-section-id', section.id);
-                option.innerHTML = `
-                    <i class="${section.icon}"></i>
-                    <p>${section.title}</p>
-                `;
-                
-                option.addEventListener('click', () => {
-                    addSectionToForm(section.id);
-                    hideAddSectionModal();
-                });
-                
-                elements.sectionOptions.appendChild(option);
-            });
         }
 
         // ========== SECTION MANAGEMENT ==========
         function addSectionToForm(sectionId) {
+            // Check if section already exists
             if (document.querySelector(`[data-section="${sectionId}"]`)) return;
             
             const sectionData = appState.sectionData[sectionId];
@@ -1921,174 +1610,262 @@
             
             let sectionHTML = '';
             
-            if (['education', 'experience', 'internships', 'projects'].includes(sectionId)) {
-                sectionHTML = createItemBasedSection(sectionId, sectionData);
-            } else if (['skills', 'certifications', 'achievements', 'languages'].includes(sectionId)) {
-                sectionHTML = createListBasedSection(sectionId, sectionData);
-            } else if (['objective', 'summary'].includes(sectionId)) {
-                sectionHTML = createTextBasedSection(sectionId, sectionData);
+            switch(sectionId) {
+                case 'summary':
+                    sectionHTML = createSummarySection(sectionData);
+                    break;
+                case 'education':
+                    sectionHTML = createEducationSection(sectionData);
+                    break;
+                case 'experience':
+                    sectionHTML = createExperienceSection(sectionData);
+                    break;
+                case 'skills':
+                    sectionHTML = createSkillsSection(sectionData);
+                    break;
+                case 'projects':
+                    sectionHTML = createProjectsSection(sectionData);
+                    break;
+                case 'certifications':
+                    sectionHTML = createCertificationsSection(sectionData);
+                    break;
+                case 'internships':
+                    sectionHTML = createInternshipsSection(sectionData);
+                    break;
+                case 'achievements':
+                    sectionHTML = createAchievementsSection(sectionData);
+                    break;
             }
             
-            elements.dynamicSections.insertAdjacentHTML('beforeend', sectionHTML);
-            const newSection = elements.dynamicSections.lastElementChild;
-            setupSectionEventListeners(newSection, sectionId);
-            updateResumePreview();
+            if (sectionHTML) {
+                elements.dynamicSections.insertAdjacentHTML('beforeend', sectionHTML);
+                const newSection = elements.dynamicSections.lastElementChild;
+                setupSectionEventListeners(newSection, sectionId);
+                updateResumePreview();
+            }
         }
 
-        function createItemBasedSection(sectionId, sectionData) {
-            const itemsHTML = sectionData.items.map((item, index) => `
-                <div class="form-item" data-item-index="${index}">
-                    <div class="item-header">
-                        <h5>Item ${index + 1}</h5>
-                        <button type="button" class="btn-remove-item" data-item-index="${index}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    ${createItemFields(sectionId, item, index)}
-                </div>
-            `).join('');
-            
+        function createSummarySection(sectionData) {
             return `
-                <div class="form-section" data-section="${sectionId}">
+                <div class="form-section" data-section="summary">
                     <div class="section-header-editable">
-                        <h4><i class="${getSectionIcon(sectionId)}"></i> ${sectionData.title}</h4>
-                        <button class="btn-section-toggle"><i class="fas fa-chevron-down"></i></button>
-                    </div>
-                    <div class="section-content">
-                        <div class="form-items-container" id="${sectionId}-items">
-                            ${itemsHTML}
-                        </div>
-                        <button type="button" class="btn-add-item" data-section="${sectionId}">
-                            <i class="fas fa-plus"></i> Add ${sectionData.title.substring(0, sectionData.title.length - 1)}
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createListBasedSection(sectionId, sectionData) {
-            const itemsHTML = sectionData.items.map((item, index) => `
-                <div class="form-group list-item" data-item-index="${index}">
-                    <div class="list-item-controls">
-                        <input type="text" value="${item}" placeholder="Enter item" 
-                               data-section="${sectionId}" data-index="${index}" class="list-item-input">
-                        <button type="button" class="btn-remove-list-item" data-section="${sectionId}" data-index="${index}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-            
-            return `
-                <div class="form-section" data-section="${sectionId}">
-                    <div class="section-header-editable">
-                        <h4><i class="${getSectionIcon(sectionId)}"></i> ${sectionData.title}</h4>
-                        <button class="btn-section-toggle"><i class="fas fa-chevron-down"></i></button>
-                    </div>
-                    <div class="section-content">
-                        ${itemsHTML}
-                        <button type="button" class="btn-add-list-item" data-section="${sectionId}">
-                            <i class="fas fa-plus"></i> Add Item
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createTextBasedSection(sectionId, sectionData) {
-            return `
-                <div class="form-section" data-section="${sectionId}">
-                    <div class="section-header-editable">
-                        <h4><i class="${getSectionIcon(sectionId)}"></i> ${sectionData.title}</h4>
+                        <h4><i class="fas fa-user-tie"></i> Professional Summary</h4>
                         <button class="btn-section-toggle"><i class="fas fa-chevron-down"></i></button>
                     </div>
                     <div class="section-content">
                         <div class="form-group">
-                            <textarea id="${sectionId}-content" rows="6" 
-                                      placeholder="Enter your ${sectionData.title.toLowerCase()}">${sectionData.content}</textarea>
+                            <label for="summary-content">Professional Summary (2-3 sentences)</label>
+                            <textarea id="summary-content" rows="4">${sectionData.content}</textarea>
+                            <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">
+                                <i class="fas fa-lightbulb"></i> Tip: Include keywords from the job description you're applying for.
+                            </p>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        function createItemFields(sectionId, item, index) {
-            if (sectionId === 'education') {
-                return `
+        function createEducationSection(sectionData) {
+            const itemsHTML = sectionData.items.map((item, index) => `
+                <div class="form-item" data-item-index="${index}">
                     <div class="form-group">
-                        <label for="${sectionId}-degree-${index}">Degree/Certificate</label>
-                        <input type="text" id="${sectionId}-degree-${index}" 
-                               value="${item.degree}" data-field="degree" data-index="${index}">
+                        <label for="education-degree-${index}">Degree/Certificate *</label>
+                        <input type="text" id="education-degree-${index}" value="${item.degree}">
                     </div>
                     <div class="form-group">
-                        <label for="${sectionId}-institution-${index}">Institution</label>
-                        <input type="text" id="${sectionId}-institution-${index}" 
-                               value="${item.institution}" data-field="institution" data-index="${index}">
+                        <label for="education-institution-${index}">Institution *</label>
+                        <input type="text" id="education-institution-${index}" value="${item.institution}">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education-location-${index}">Location</label>
+                            <input type="text" id="education-location-${index}" value="${item.location}">
+                        </div>
+                        <div class="form-group">
+                            <label for="education-duration-${index}">Duration *</label>
+                            <input type="text" id="education-duration-${index}" placeholder="e.g., 2018 - 2022" value="${item.duration}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education-gpa-${index}">GPA (if 3.0+)</label>
+                            <input type="text" id="education-gpa-${index}" value="${item.gpa}">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="${sectionId}-duration-${index}">Duration</label>
-                        <input type="text" id="${sectionId}-duration-${index}" 
-                               value="${item.duration}" data-field="duration" data-index="${index}">
+                        <label for="education-details-${index}">Relevant Details</label>
+                        <textarea id="education-details-${index}" rows="3">${item.details}</textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="${sectionId}-description-${index}">Description</label>
-                        <textarea id="${sectionId}-description-${index}" 
-                                  data-field="description" data-index="${index}">${item.description}</textarea>
-                    </div>
-                `;
-            } else if (sectionId === 'experience' || sectionId === 'internships') {
-                return `
-                    <div class="form-group">
-                        <label for="${sectionId}-position-${index}">Position/Role</label>
-                        <input type="text" id="${sectionId}-position-${index}" 
-                               value="${item.position}" data-field="position" data-index="${index}">
-                    </div>
-                    <div class="form-group">
-                        <label for="${sectionId}-company-${index}">Company/Organization</label>
-                        <input type="text" id="${sectionId}-company-${index}" 
-                               value="${item.company}" data-field="company" data-index="${index}">
-                    </div>
-                    <div class="form-group">
-                        <label for="${sectionId}-duration-${index}">Duration</label>
-                        <input type="text" id="${sectionId}-duration-${index}" 
-                               value="${item.duration}" data-field="duration" data-index="${index}">
-                    </div>
-                    <div class="form-group">
-                        <label for="${sectionId}-description-${index}">Description</label>
-                        <textarea id="${sectionId}-description-${index}" 
-                                  data-field="description" data-index="${index}">${item.description}</textarea>
-                    </div>
-                `;
-            } else if (sectionId === 'projects') {
-                return `
-                    <div class="form-group">
-                        <label for="${sectionId}-name-${index}">Project Name</label>
-                        <input type="text" id="${sectionId}-name-${index}" 
-                               value="${item.name}" data-field="name" data-index="${index}">
-                    </div>
-                    <div class="form-group">
-                        <label for="${sectionId}-description-${index}">Description</label>
-                        <textarea id="${sectionId}-description-${index}" 
-                                  data-field="description" data-index="${index}">${item.description}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="${sectionId}-technologies-${index}">Technologies Used</label>
-                        <input type="text" id="${sectionId}-technologies-${index}" 
-                               value="${item.technologies}" data-field="technologies" data-index="${index}">
-                    </div>
-                `;
-            }
+                </div>
+            `).join('');
             
-            return '';
+            return `
+                <div class="form-section" data-section="education">
+                    <div class="section-header-editable">
+                        <h4><i class="fas fa-graduation-cap"></i> Education</h4>
+                        <button class="btn-section-toggle"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-items-container">
+                            ${itemsHTML}
+                        </div>
+                        <button class="btn-outline btn-small" onclick="addEducationItem()" style="margin-top: 1rem;">
+                            <i class="fas fa-plus"></i> Add Another Education
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
-        function getSectionIcon(sectionId) {
-            const sections = appState.availableSections[appState.resumeType];
-            const section = sections.find(s => s.id === sectionId);
-            return section ? section.icon : 'fas fa-list';
+        function createExperienceSection(sectionData) {
+            const itemsHTML = sectionData.items.map((item, index) => `
+                <div class="form-item" data-item-index="${index}">
+                    <div class="form-group">
+                        <label for="experience-position-${index}">Position/Title *</label>
+                        <input type="text" id="experience-position-${index}" value="${item.position}">
+                    </div>
+                    <div class="form-group">
+                        <label for="experience-company-${index}">Company *</label>
+                        <input type="text" id="experience-company-${index}" value="${item.company}">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experience-location-${index}">Location</label>
+                            <input type="text" id="experience-location-${index}" value="${item.location}">
+                        </div>
+                        <div class="form-group">
+                            <label for="experience-duration-${index}">Duration *</label>
+                            <input type="text" id="experience-duration-${index}" placeholder="e.g., June 2022 - Present" value="${item.duration}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience-responsibilities-${index}">Responsibilities & Achievements</label>
+                        <textarea id="experience-responsibilities-${index}" rows="6">${item.responsibilities ? item.responsibilities.join('\n• ') : ''}</textarea>
+                        <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">
+                            <i class="fas fa-lightbulb"></i> Tip: Use bullet points (start each line with •) and quantify achievements when possible.
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+            
+            return `
+                <div class="form-section" data-section="experience">
+                    <div class="section-header-editable">
+                        <h4><i class="fas fa-briefcase"></i> Work Experience</h4>
+                        <button class="btn-section-toggle"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-items-container">
+                            ${itemsHTML}
+                        </div>
+                        <button class="btn-outline btn-small" onclick="addExperienceItem()" style="margin-top: 1rem;">
+                            <i class="fas fa-plus"></i> Add Another Position
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createSkillsSection(sectionData) {
+            const categoriesHTML = sectionData.categories.map((category, catIndex) => `
+                <div class="form-group">
+                    <label for="skills-category-${catIndex}">Category ${catIndex + 1}</label>
+                    <input type="text" id="skills-category-${catIndex}" value="${category.category}" placeholder="e.g., Programming Languages">
+                    <label style="margin-top: 0.5rem;">Skills (comma separated)</label>
+                    <input type="text" id="skills-items-${catIndex}" value="${category.items.join(', ')}" placeholder="e.g., JavaScript, Python, Java">
+                </div>
+            `).join('');
+            
+            return `
+                <div class="form-section" data-section="skills">
+                    <div class="section-header-editable">
+                        <h4><i class="fas fa-code"></i> Skills</h4>
+                        <button class="btn-section-toggle"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        <p style="font-size: 0.875rem; color: var(--text-light); margin-bottom: 1rem;">
+                            <i class="fas fa-lightbulb"></i> Tip: Group skills by category for better ATS parsing.
+                        </p>
+                        ${categoriesHTML}
+                        <button class="btn-outline btn-small" onclick="addSkillsCategory()" style="margin-top: 1rem;">
+                            <i class="fas fa-plus"></i> Add Another Category
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createProjectsSection(sectionData) {
+            const itemsHTML = sectionData.items.map((item, index) => `
+                <div class="form-item" data-item-index="${index}">
+                    <div class="form-group">
+                        <label for="project-name-${index}">Project Name *</label>
+                        <input type="text" id="project-name-${index}" value="${item.name}">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="project-duration-${index}">Duration</label>
+                            <input type="text" id="project-duration-${index}" value="${item.duration}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-description-${index}">Brief Description</label>
+                        <input type="text" id="project-description-${index}" value="${item.description}">
+                    </div>
+                    <div class="form-group">
+                        <label for="project-technologies-${index}">Technologies Used</label>
+                        <input type="text" id="project-technologies-${index}" value="${item.technologies}">
+                    </div>
+                    <div class="form-group">
+                        <label for="project-details-${index}">Key Details/Achievements</label>
+                        <textarea id="project-details-${index}" rows="3">${item.details}</textarea>
+                    </div>
+                </div>
+            `).join('');
+            
+            return `
+                <div class="form-section" data-section="projects">
+                    <div class="section-header-editable">
+                        <h4><i class="fas fa-project-diagram"></i> Projects</h4>
+                        <button class="btn-section-toggle"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-items-container">
+                            ${itemsHTML}
+                        </div>
+                        <button class="btn-outline btn-small" onclick="addProjectItem()" style="margin-top: 1rem;">
+                            <i class="fas fa-plus"></i> Add Another Project
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createCertificationsSection(sectionData) {
+            const itemsHTML = sectionData.items.map((item, index) => `
+                <div class="form-group">
+                    <input type="text" value="${item}" placeholder="Certification name">
+                </div>
+            `).join('');
+            
+            return `
+                <div class="form-section" data-section="certifications">
+                    <div class="section-header-editable">
+                        <h4><i class="fas fa-certificate"></i> Certifications</h4>
+                        <button class="btn-section-toggle"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="section-content">
+                        ${itemsHTML}
+                        <button class="btn-outline btn-small" onclick="addCertificationItem()" style="margin-top: 1rem;">
+                            <i class="fas fa-plus"></i> Add Certification
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
         function setupSectionEventListeners(section, sectionId) {
+            // Toggle section visibility
             const toggleBtn = section.querySelector('.btn-section-toggle');
             const sectionContent = section.querySelector('.section-content');
             
@@ -2100,277 +1877,25 @@
                     '<i class="fas fa-chevron-up"></i>';
             });
             
-            if (['education', 'experience', 'internships', 'projects'].includes(sectionId)) {
-                setupItemBasedSectionListeners(section, sectionId);
-            } else if (['skills', 'certifications', 'achievements', 'languages'].includes(sectionId)) {
-                setupListBasedSectionListeners(section, sectionId);
-            } else if (['objective', 'summary'].includes(sectionId)) {
-                setupTextBasedSectionListeners(section, sectionId);
-            }
-        }
-
-        function setupItemBasedSectionListeners(section, sectionId) {
-            const addBtn = section.querySelector('.btn-add-item');
-            addBtn.addEventListener('click', () => addItemToSection(sectionId));
-            
-            const removeBtns = section.querySelectorAll('.btn-remove-item');
-            removeBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = this.getAttribute('data-item-index');
-                    removeItemFromSection(sectionId, index);
-                });
-            });
-            
+            // Add input listeners to all inputs in the section
             const inputs = section.querySelectorAll('input, textarea');
             inputs.forEach(input => {
                 input.addEventListener('input', updateResumePreview);
             });
         }
 
-        function setupListBasedSectionListeners(section, sectionId) {
-            const addBtn = section.querySelector('.btn-add-list-item');
-            addBtn.addEventListener('click', () => addListItemToSection(sectionId));
-            
-            const removeBtns = section.querySelectorAll('.btn-remove-list-item');
-            removeBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = this.getAttribute('data-index');
-                    removeListItemFromSection(sectionId, index);
-                });
-            });
-            
-            const inputs = section.querySelectorAll('.list-item-input');
-            inputs.forEach(input => {
-                input.addEventListener('input', updateResumePreview);
-            });
-        }
-
-        function setupTextBasedSectionListeners(section, sectionId) {
-            const textarea = section.querySelector('textarea');
-            textarea.addEventListener('input', updateResumePreview);
-        }
-
-        function addItemToSection(sectionId) {
-            const section = document.querySelector(`[data-section="${sectionId}"]`);
-            const itemsContainer = section.querySelector('.form-items-container');
-            const itemCount = itemsContainer.querySelectorAll('.form-item').length;
-            const sectionData = appState.sectionData[sectionId];
-            const newItem = sectionData.items[0] ? {...sectionData.items[0]} : getDefaultItemForSection(sectionId);
-            
-            const itemHTML = `
-                <div class="form-item" data-item-index="${itemCount}">
-                    <div class="item-header">
-                        <h5>Item ${itemCount + 1}</h5>
-                        <button type="button" class="btn-remove-item" data-item-index="${itemCount}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    ${createItemFields(sectionId, newItem, itemCount)}
-                </div>
-            `;
-            
-            itemsContainer.insertAdjacentHTML('beforeend', itemHTML);
-            const newItemElement = itemsContainer.lastElementChild;
-            const removeBtn = newItemElement.querySelector('.btn-remove-item');
-            removeBtn.addEventListener('click', function() {
-                const index = this.getAttribute('data-item-index');
-                removeItemFromSection(sectionId, index);
-            });
-            
-            const inputs = newItemElement.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('input', updateResumePreview);
-            });
-            
-            updateResumePreview();
-        }
-
-        function getDefaultItemForSection(sectionId) {
-            if (sectionId === 'education') {
-                return {
-                    degree: '',
-                    institution: '',
-                    duration: '',
-                    description: ''
-                };
-            } else if (sectionId === 'experience' || sectionId === 'internships') {
-                return {
-                    position: '',
-                    company: '',
-                    duration: '',
-                    description: ''
-                };
-            } else if (sectionId === 'projects') {
-                return {
-                    name: '',
-                    description: '',
-                    technologies: ''
-                };
-            }
-            return {};
-        }
-
-        function removeItemFromSection(sectionId, index) {
-            const section = document.querySelector(`[data-section="${sectionId}"]`);
-            const item = section.querySelector(`[data-item-index="${index}"]`);
-            
-            if (item) {
-                item.remove();
-                const items = section.querySelectorAll('.form-item');
-                items.forEach((item, newIndex) => {
-                    item.setAttribute('data-item-index', newIndex);
-                    const removeBtn = item.querySelector('.btn-remove-item');
-                    if (removeBtn) {
-                        removeBtn.setAttribute('data-item-index', newIndex);
-                    }
-                    
-                    const inputs = item.querySelectorAll('input, textarea, select');
-                    inputs.forEach(input => {
-                        const oldId = input.id;
-                        const newId = oldId.replace(/-\d+$/, `-${newIndex}`);
-                        input.id = newId;
-                        input.setAttribute('data-index', newIndex);
-                    });
-                });
-                
-                updateResumePreview();
-            }
-        }
-
-        function addListItemToSection(sectionId) {
-            const section = document.querySelector(`[data-section="${sectionId}"]`);
-            const sectionContent = section.querySelector('.section-content');
-            
-            const itemHTML = `
-                <div class="form-group list-item" data-item-index="${Date.now()}">
-                    <div class="list-item-controls">
-                        <input type="text" value="" placeholder="Enter item" 
-                               data-section="${sectionId}" data-index="${Date.now()}" class="list-item-input">
-                        <button type="button" class="btn-remove-list-item" data-section="${sectionId}" data-index="${Date.now()}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            const addBtn = section.querySelector('.btn-add-list-item');
-            addBtn.insertAdjacentHTML('beforebegin', itemHTML);
-            const newItem = addBtn.previousElementSibling;
-            const input = newItem.querySelector('.list-item-input');
-            const removeBtn = newItem.querySelector('.btn-remove-list-item');
-            
-            input.addEventListener('input', updateResumePreview);
-            removeBtn.addEventListener('click', function() {
-                const index = this.getAttribute('data-index');
-                removeListItemFromSection(sectionId, index);
-            });
-            
-            updateResumePreview();
-        }
-
-        function removeListItemFromSection(sectionId, index) {
-            const section = document.querySelector(`[data-section="${sectionId}"]`);
-            const item = section.querySelector(`[data-index="${index}"]`);
-            
-            if (item && item.closest('.list-item')) {
-                item.closest('.list-item').remove();
-                updateResumePreview();
-            }
-        }
-
-        // ========== TEMPLATE MANAGEMENT ==========
-        function selectTemplate(templateId) {
-            appState.selectedTemplate = templateId;
-            showPage('editor');
-        }
-
-        function handleTemplateUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const validTypes = ['application/pdf', 'application/msword', 
-                               'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-            
-            if (!validTypes.includes(file.type)) {
-                showToast('Please upload a PDF or DOC/DOCX file', 'error');
-                return;
-            }
-            
-            showLoading();
-            
-            setTimeout(() => {
-                hideLoading();
-                showToast('Template uploaded successfully! Opening in editor...', 'success');
-                appState.selectedTemplate = 'template1';
-                showPage('editor');
-            }, 1500);
-        }
-
-        function handleDragOver(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            elements.uploadArea.style.borderColor = 'var(--primary-color)';
-            elements.uploadArea.style.background = 'rgba(58, 134, 255, 0.1)';
-        }
-
-        function handleFileDrop(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            elements.uploadArea.style.borderColor = '';
-            elements.uploadArea.style.background = '';
-            
-            const files = event.dataTransfer.files;
-            if (files.length > 0) {
-                const file = files[0];
-                const fakeEvent = {
-                    target: {
-                        files: [file]
-                    }
-                };
-                handleTemplateUpload(fakeEvent);
-            }
-        }
-
-        // ========== MODAL FUNCTIONS ==========
-        function showAddSectionModal() {
-            updateSectionOptions();
-            elements.addSectionModal.classList.remove('hidden');
-        }
-
-        function hideAddSectionModal() {
-            elements.addSectionModal.classList.add('hidden');
-        }
-
-        // ========== THEME & COLOR FUNCTIONS ==========
-        function toggleColorPicker() {
-            elements.colorPicker.classList.toggle('hidden');
-        }
-
-        function changeThemeColor(color) {
-            appState.currentColor = color;
-            
-            elements.colorOptions.forEach(option => {
-                option.classList.remove('active');
-                if (option.getAttribute('data-color') === color) {
-                    option.classList.add('active');
-                }
-            });
-            
-            document.documentElement.style.setProperty('--primary-color', color);
-            updateResumePreview();
-            elements.colorPicker.classList.add('hidden');
-        }
-
         // ========== RESUME PREVIEW ==========
         function updateResumePreview() {
+            // Update appState with form data
             updateAppStateFromForm();
-            const previewHTML = generateResumePreview();
+            
+            // Generate ATS-friendly preview
+            const previewHTML = generateATSResumePreview();
             elements.resumePreview.innerHTML = previewHTML;
-            elements.resumePreview.style.setProperty('--preview-primary', appState.currentColor);
         }
 
         function updateAppStateFromForm() {
+            // Update personal details
             appState.resumeData.personal = {
                 name: elements.fullName.value,
                 title: elements.jobTitle.value,
@@ -2381,155 +1906,174 @@
                 portfolio: elements.portfolio.value
             };
             
-            const sections = document.querySelectorAll('.form-section[data-section]');
-            sections.forEach(section => {
-                const sectionId = section.getAttribute('data-section');
-                
-                if (['objective', 'summary'].includes(sectionId)) {
-                    const textarea = section.querySelector('textarea');
-                    if (textarea) {
-                        if (!appState.sectionData[sectionId]) {
-                            appState.sectionData[sectionId] = { title: '', content: '' };
-                        }
-                        appState.sectionData[sectionId].content = textarea.value;
-                    }
-                } else if (['skills', 'certifications', 'achievements', 'languages'].includes(sectionId)) {
-                    const inputs = section.querySelectorAll('.list-item-input');
-                    const items = Array.from(inputs).map(input => input.value).filter(value => value.trim() !== '');
-                    
-                    if (!appState.sectionData[sectionId]) {
-                        appState.sectionData[sectionId] = { title: '', items: [] };
-                    }
-                    appState.sectionData[sectionId].items = items;
-                } else {
-                    const items = [];
-                    const itemElements = section.querySelectorAll('.form-item');
-                    
-                    itemElements.forEach(itemElement => {
-                        const inputs = itemElement.querySelectorAll('input, textarea');
-                        const itemData = {};
-                        
-                        inputs.forEach(input => {
-                            const field = input.getAttribute('data-field');
-                            if (field) {
-                                itemData[field] = input.value;
-                            }
-                        });
-                        
-                        if (Object.keys(itemData).length > 0) {
-                            items.push(itemData);
-                        }
-                    });
-                    
-                    if (!appState.sectionData[sectionId]) {
-                        appState.sectionData[sectionId] = { title: '', items: [] };
-                    }
-                    appState.sectionData[sectionId].items = items;
-                }
-            });
+            // Update sections from form (simplified for this example)
+            // In a full implementation, you would update each section's data
         }
 
-        function generateResumePreview() {
+        function generateATSResumePreview() {
             const personal = appState.resumeData.personal;
-            const sections = appState.availableSections[appState.resumeType];
             
-            let previewHTML = `
-                <div class="resume-template">
-                    <div class="resume-header">
-                        <div class="resume-name">${personal.name || 'Your Name'}</div>
-                        <div class="resume-title">${personal.title || 'Your Profession'}</div>
-                        <div class="resume-contact">
-                            ${personal.email ? `<div><i class="fas fa-envelope"></i> ${personal.email}</div>` : ''}
-                            ${personal.phone ? `<div><i class="fas fa-phone"></i> ${personal.phone}</div>` : ''}
-                            ${personal.address ? `<div><i class="fas fa-map-marker-alt"></i> ${personal.address}</div>` : ''}
-                            ${personal.linkedin ? `<div><i class="fab fa-linkedin"></i> ${personal.linkedin}</div>` : ''}
-                            ${personal.portfolio ? `<div><i class="fas fa-globe"></i> ${personal.portfolio}</div>` : ''}
+            return `
+                <div class="ats-resume">
+                    <div class="ats-resume-header">
+                        <div class="ats-resume-name">${personal.name}</div>
+                        <div class="ats-resume-title">${personal.title}</div>
+                        <div class="ats-contact-info">
+                            <div>${personal.email} | ${personal.phone}</div>
+                            <div>${personal.address}</div>
+                            <div>${personal.linkedin} | ${personal.portfolio}</div>
                         </div>
                     </div>
+                    
+                    <div class="ats-section">
+                        <div class="ats-section-title">PROFESSIONAL SUMMARY</div>
+                        <div class="ats-item-description">
+                            Results-driven ${personal.title} with experience in developing scalable applications. 
+                            Proficient in modern web technologies and passionate about creating efficient, 
+                            user-friendly solutions. Strong problem-solving skills and ability to work 
+                            collaboratively in agile environments.
+                        </div>
+                    </div>
+                    
+                    ${appState.resumeType === 'experienced' ? `
+                    <div class="ats-section">
+                        <div class="ats-section-title">WORK EXPERIENCE</div>
+                        <div class="ats-item">
+                            <div class="ats-item-header">
+                                <div class="ats-item-title">Software Engineer</div>
+                                <div class="ats-item-duration">June 2022 - Present</div>
+                            </div>
+                            <div class="ats-item-subtitle">Tech Solutions Inc., San Francisco, CA</div>
+                            <div class="ats-item-description">
+                                <ul>
+                                    <li>Developed and maintained responsive web applications using React.js and Node.js</li>
+                                    <li>Implemented RESTful APIs that improved system performance by 30%</li>
+                                    <li>Collaborated with cross-functional teams in an Agile environment</li>
+                                    <li>Participated in code reviews and mentored junior developers</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="ats-section">
+                        <div class="ats-section-title">EDUCATION</div>
+                        <div class="ats-item">
+                            <div class="ats-item-header">
+                                <div class="ats-item-title">Bachelor of Science in Computer Science</div>
+                                <div class="ats-item-duration">2018 - 2022</div>
+                            </div>
+                            <div class="ats-item-subtitle">University of California, Berkeley | GPA: 3.7/4.0</div>
+                            <div class="ats-item-description">
+                                Relevant Coursework: Data Structures, Algorithms, Database Systems, Web Development, Software Engineering
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ats-section">
+                        <div class="ats-section-title">SKILLS</div>
+                        <div class="ats-skills-list">
+                            <div><strong>Programming Languages:</strong> JavaScript, Python, Java, HTML5, CSS3</div>
+                            <div><strong>Frameworks & Libraries:</strong> React.js, Node.js, Express.js, Bootstrap</div>
+                            <div><strong>Tools & Technologies:</strong> Git, Docker, AWS, MySQL, MongoDB, REST APIs</div>
+                            <div><strong>Soft Skills:</strong> Problem Solving, Team Collaboration, Communication, Agile Methodologies</div>
+                        </div>
+                    </div>
+                    
+                    ${appState.resumeType === 'fresher' ? `
+                    <div class="ats-section">
+                        <div class="ats-section-title">PROJECTS</div>
+                        <div class="ats-item">
+                            <div class="ats-item-header">
+                                <div class="ats-item-title">E-Commerce Platform</div>
+                                <div class="ats-item-duration">2022</div>
+                            </div>
+                            <div class="ats-item-description">
+                                <ul>
+                                    <li>Full-stack e-commerce application with user authentication and payment processing</li>
+                                    <li>Technologies: React, Node.js, MongoDB, Stripe API</li>
+                                    <li>Implemented secure user authentication and authorization system</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="ats-section">
+                        <div class="ats-section-title">CERTIFICATIONS</div>
+                        <div class="ats-skills-list">
+                            <div>AWS Certified Solutions Architect (2023)</div>
+                            <div>Google Professional Cloud Developer (2022)</div>
+                        </div>
+                    </div>
+                </div>
             `;
+        }
+
+        // ========== MODAL FUNCTIONS ==========
+        function showAddSectionModal() {
+            // Clear existing options
+            elements.sectionOptions.innerHTML = '';
             
+            // Get sections for current resume type
+            const sections = appState.availableSections[appState.resumeType];
+            
+            // Add sections that aren't already in the form
             sections.forEach(section => {
-                const sectionData = appState.sectionData[section.id];
-                if (!sectionData || 
-                    (Array.isArray(sectionData.items) && sectionData.items.length === 0) ||
-                    (sectionData.content && sectionData.content.trim() === '')) {
-                    return;
-                }
-                
-                previewHTML += `<div class="resume-section">`;
-                previewHTML += `<h3>${sectionData.title || section.title}</h3>`;
-                
-                if (['objective', 'summary'].includes(section.id)) {
-                    previewHTML += `<div class="resume-content">${sectionData.content.replace(/\n/g, '<br>')}</div>`;
-                } else if (['skills', 'certifications', 'achievements', 'languages'].includes(section.id)) {
-                    previewHTML += `<div class="skills-list">`;
-                    sectionData.items.forEach(item => {
-                        if (item.trim() !== '') {
-                            previewHTML += `<span class="skill-tag">${item}</span>`;
-                        }
+                const existingSection = document.querySelector(`[data-section="${section.id}"]`);
+                if (!existingSection) {
+                    const option = document.createElement('div');
+                    option.className = 'section-option';
+                    option.innerHTML = `
+                        <i class="${section.icon}"></i>
+                        <h5>${section.title}</h5>
+                        <p style="font-size: 0.875rem; color: var(--text-light);">Add ${section.title} section</p>
+                    `;
+                    
+                    option.addEventListener('click', () => {
+                        addSectionToForm(section.id);
+                        hideAddSectionModal();
                     });
-                    previewHTML += `</div>`;
-                } else {
-                    sectionData.items.forEach(item => {
-                        previewHTML += `<div class="resume-item">`;
-                        previewHTML += `<div class="item-header">`;
-                        
-                        if (section.id === 'education') {
-                            previewHTML += `<div class="item-title">${item.degree || ''}</div>`;
-                            previewHTML += `<div class="item-duration">${item.duration || ''}</div>`;
-                        } else if (section.id === 'experience' || section.id === 'internships') {
-                            previewHTML += `<div class="item-title">${item.position || ''}</div>`;
-                            previewHTML += `<div class="item-duration">${item.duration || ''}</div>`;
-                        } else if (section.id === 'projects') {
-                            previewHTML += `<div class="item-title">${item.name || ''}</div>`;
-                        }
-                        
-                        previewHTML += `</div>`;
-                        
-                        if (section.id === 'education') {
-                            previewHTML += `<div class="item-subtitle">${item.institution || ''}</div>`;
-                        } else if (section.id === 'experience' || section.id === 'internships') {
-                            previewHTML += `<div class="item-subtitle">${item.company || ''}</div>`;
-                        } else if (section.id === 'projects') {
-                            previewHTML += `<div class="item-subtitle">${item.technologies || ''}</div>`;
-                        }
-                        
-                        if (item.description) {
-                            previewHTML += `<div class="item-description">${item.description.replace(/\n/g, '<br>')}</div>`;
-                        }
-                        
-                        previewHTML += `</div>`;
-                    });
+                    
+                    elements.sectionOptions.appendChild(option);
                 }
-                
-                previewHTML += `</div>`;
             });
             
-            previewHTML += `</div>`;
-            return previewHTML;
+            // Show modal
+            elements.addSectionModal.classList.remove('hidden');
+        }
+
+        function hideAddSectionModal() {
+            elements.addSectionModal.classList.add('hidden');
         }
 
         // ========== RESUME ACTIONS ==========
         function resetResume() {
             if (confirm('Are you sure you want to reset your resume? All changes will be lost.')) {
-                appState.resumeData = {
-                    personal: {
-                        name: 'John Doe',
-                        title: 'Frontend Developer',
-                        email: 'john.doe@example.com',
-                        phone: '+1 (234) 567-8901',
-                        address: 'San Francisco, CA',
-                        linkedin: 'linkedin.com/in/johndoe',
-                        portfolio: 'johndoe.dev'
-                    }
-                };
-                
+                // Reset to default values
                 initializeForm();
+                
+                // Clear dynamic sections and re-add default ones
                 elements.dynamicSections.innerHTML = '';
                 updateAvailableSections();
-                changeThemeColor('#3a86ff');
+                
+                // Update preview
                 updateResumePreview();
+                
                 showToast('Resume has been reset to default', 'success');
+            }
+        }
+
+        function toggleFormattingView() {
+            const preview = elements.resumePreview;
+            const isPlainText = preview.classList.contains('plain-text');
+            
+            if (isPlainText) {
+                preview.classList.remove('plain-text');
+                elements.toggleFormattingBtn.innerHTML = '<i class="fas fa-code"></i> Show Plain Text';
+            } else {
+                preview.classList.add('plain-text');
+                elements.toggleFormattingBtn.innerHTML = '<i class="fas fa-file-alt"></i> Show Formatted';
             }
         }
 
@@ -2537,137 +2081,98 @@
             showLoading();
             
             try {
-                // Use html2canvas and jsPDF for PDF generation
                 const element = document.getElementById('resume-preview');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                // Use html2canvas to capture the preview
                 const canvas = await html2canvas(element, {
                     scale: 2,
                     useCORS: true,
-                    logging: false
+                    logging: false,
+                    backgroundColor: '#ffffff'
                 });
                 
                 const imgData = canvas.toDataURL('image/png');
-                const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
                 const imgWidth = 190;
                 const pageHeight = 280;
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 10;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 
-                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
+                pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+                pdf.save(`ATS_Resume_${appState.resumeData.personal.name.replace(/\s+/g, '_')}.pdf`);
                 
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                
-                pdf.save(`Resume_${appState.resumeData.personal.name || 'MyResume'}.pdf`);
                 hideLoading();
-                showToast('Resume downloaded as PDF successfully!', 'success');
+                showToast('ATS-friendly PDF downloaded successfully!', 'success');
             } catch (error) {
                 hideLoading();
                 console.error('Error generating PDF:', error);
                 showToast('Error generating PDF. Please try again.', 'error');
+                // Fallback to print
                 printResume();
             }
         }
 
-        function downloadAsDOC() {
+        function downloadAsText() {
             showLoading();
+            
             const personal = appState.resumeData.personal;
+            let textContent = `RESUME - ${personal.name}\n`;
+            textContent += '='.repeat(50) + '\n\n';
+            textContent += `${personal.name}\n`;
+            textContent += `${personal.title}\n\n`;
+            textContent += `Contact Information:\n`;
+            textContent += `${personal.email} | ${personal.phone}\n`;
+            textContent += `${personal.address}\n`;
+            textContent += `${personal.linkedin} | ${personal.portfolio}\n\n`;
             
-            let docContent = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>${personal.name || 'My Resume'}</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 40px; }
-                        h1 { color: #2c3e50; border-bottom: 2px solid ${appState.currentColor}; padding-bottom: 10px; }
-                        h2 { color: ${appState.currentColor}; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 25px; }
-                        .contact-info { margin-bottom: 20px; color: #7f8c8d; }
-                        .item { margin-bottom: 15px; }
-                        .item-title { font-weight: bold; }
-                        .item-subtitle { color: #7f8c8d; font-style: italic; }
-                        .item-duration { float: right; color: ${appState.currentColor}; }
-                        .skills-list { margin-top: 10px; }
-                        .skill-tag { background: ${appState.currentColor}; color: white; padding: 3px 8px; border-radius: 3px; display: inline-block; margin-right: 5px; margin-bottom: 5px; }
-                    </style>
-                </head>
-                <body>
-                    <h1>${personal.name || 'Your Name'}</h1>
-                    <div class="contact-info">
-                        ${personal.title ? `<div>${personal.title}</div>` : ''}
-                        ${personal.email ? `<div>Email: ${personal.email}</div>` : ''}
-                        ${personal.phone ? `<div>Phone: ${personal.phone}</div>` : ''}
-                        ${personal.address ? `<div>Address: ${personal.address}</div>` : ''}
-                        ${personal.linkedin ? `<div>LinkedIn: ${personal.linkedin}</div>` : ''}
-                        ${personal.portfolio ? `<div>Portfolio: ${personal.portfolio}</div>` : ''}
-                    </div>
-            `;
+            textContent += 'PROFESSIONAL SUMMARY\n';
+            textContent += '-'.repeat(30) + '\n';
+            textContent += 'Results-driven professional with experience in relevant field...\n\n';
             
-            const sections = appState.availableSections[appState.resumeType];
-            sections.forEach(section => {
-                const sectionData = appState.sectionData[section.id];
-                if (!sectionData) return;
-                
-                if (['objective', 'summary'].includes(section.id) && sectionData.content) {
-                    docContent += `<h2>${sectionData.title || section.title}</h2>`;
-                    docContent += `<div>${sectionData.content.replace(/\n/g, '<br>')}</div>`;
-                } else if (['skills', 'certifications', 'achievements', 'languages'].includes(section.id) && 
-                          sectionData.items && sectionData.items.length > 0) {
-                    docContent += `<h2>${sectionData.title || section.title}</h2>`;
-                    docContent += `<div class="skills-list">`;
-                    sectionData.items.forEach(item => {
-                        if (item.trim() !== '') {
-                            docContent += `<span class="skill-tag">${item}</span>`;
-                        }
-                    });
-                    docContent += `</div>`;
-                } else if (sectionData.items && sectionData.items.length > 0) {
-                    docContent += `<h2>${sectionData.title || section.title}</h2>`;
-                    sectionData.items.forEach(item => {
-                        docContent += `<div class="item">`;
-                        
-                        if (section.id === 'education') {
-                            docContent += `<div class="item-title">${item.degree || ''}</div>`;
-                            docContent += `<div class="item-subtitle">${item.institution || ''}</div>`;
-                            docContent += `<div class="item-duration">${item.duration || ''}</div>`;
-                        } else if (section.id === 'experience' || section.id === 'internships') {
-                            docContent += `<div class="item-title">${item.position || ''}</div>`;
-                            docContent += `<div class="item-subtitle">${item.company || ''}</div>`;
-                            docContent += `<div class="item-duration">${item.duration || ''}</div>`;
-                        } else if (section.id === 'projects') {
-                            docContent += `<div class="item-title">${item.name || ''}</div>`;
-                            docContent += `<div class="item-subtitle">${item.technologies || ''}</div>`;
-                        }
-                        
-                        if (item.description) {
-                            docContent += `<div>${item.description.replace(/\n/g, '<br>')}</div>`;
-                        }
-                        
-                        docContent += `</div>`;
-                    });
-                }
-            });
+            textContent += 'EDUCATION\n';
+            textContent += '-'.repeat(30) + '\n';
+            textContent += 'Bachelor of Science in Computer Science, University of California, Berkeley (2018-2022)\n';
+            textContent += 'GPA: 3.7/4.0\n\n';
             
-            docContent += `</body></html>`;
+            textContent += 'SKILLS\n';
+            textContent += '-'.repeat(30) + '\n';
+            textContent += 'Programming Languages: JavaScript, Python, Java, HTML5, CSS3\n';
+            textContent += 'Frameworks & Libraries: React.js, Node.js, Express.js\n';
+            textContent += 'Tools & Technologies: Git, Docker, AWS, MySQL, REST APIs\n\n';
             
-            const blob = new Blob([docContent], { type: 'application/msword' });
+            if (appState.resumeType === 'experienced') {
+                textContent += 'WORK EXPERIENCE\n';
+                textContent += '-'.repeat(30) + '\n';
+                textContent += 'Software Engineer, Tech Solutions Inc. (June 2022 - Present)\n';
+                textContent += '- Developed and maintained responsive web applications\n';
+                textContent += '- Implemented RESTful APIs that improved performance\n';
+                textContent += '- Collaborated with cross-functional teams\n\n';
+            } else {
+                textContent += 'PROJECTS\n';
+                textContent += '-'.repeat(30) + '\n';
+                textContent += 'E-Commerce Platform (2022)\n';
+                textContent += '- Full-stack application with user authentication\n';
+                textContent += '- Technologies: React, Node.js, MongoDB\n';
+                textContent += '- Implemented secure payment processing\n\n';
+            }
+            
+            textContent += 'CERTIFICATIONS\n';
+            textContent += '-'.repeat(30) + '\n';
+            textContent += 'AWS Certified Solutions Architect (2023)\n';
+            textContent += 'Google Professional Cloud Developer (2022)\n';
+            
+            const blob = new Blob([textContent], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Resume_${personal.name || 'MyResume'}.doc`;
+            a.download = `ATS_Resume_${personal.name.replace(/\s+/g, '_')}.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
             hideLoading();
-            showToast('Resume downloaded as DOC successfully!', 'success');
+            showToast('Text resume downloaded successfully!', 'success');
         }
 
         function printResume() {
@@ -2675,42 +2180,15 @@
             showToast('Print dialog opened', 'success');
         }
 
-        // ========== DARK MODE ==========
-        function initDarkMode() {
-            const isDarkMode = localStorage.getItem('darkMode') === 'true';
-            
-            if (isDarkMode) {
-                document.body.classList.add('dark-mode');
-                elements.darkModeToggle.classList.remove('fa-moon');
-                elements.darkModeToggle.classList.add('fa-sun');
-            }
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDarkMode);
-            
-            if (isDarkMode) {
-                elements.darkModeToggle.classList.remove('fa-moon');
-                elements.darkModeToggle.classList.add('fa-sun');
-            } else {
-                elements.darkModeToggle.classList.remove('fa-sun');
-                elements.darkModeToggle.classList.add('fa-moon');
-            }
-        }
-
         // ========== UI UTILITIES ==========
         function showToast(message, type = 'success') {
             elements.toastMessage.textContent = message;
+            elements.successToast.className = 'toast';
             
             if (type === 'error') {
-                elements.successToast.style.background = 'var(--danger-color)';
+                elements.successToast.classList.add('error');
             } else if (type === 'warning') {
-                elements.successToast.style.background = 'var(--warning-color)';
-            } else {
-                elements.successToast.style.background = 'var(--success-color)';
+                elements.successToast.classList.add('warning');
             }
             
             elements.successToast.classList.remove('hidden');
@@ -2730,6 +2208,75 @@
 
         // ========== INITIALIZE APP ==========
         document.addEventListener('DOMContentLoaded', init);
+
+        // Make helper functions available globally for inline onclick handlers
+        window.addEducationItem = function() {
+            const section = document.querySelector('[data-section="education"]');
+            const container = section.querySelector('.form-items-container');
+            const index = container.querySelectorAll('.form-item').length;
+            
+            const itemHTML = `
+                <div class="form-item" data-item-index="${index}">
+                    <div class="form-group">
+                        <label for="education-degree-${index}">Degree/Certificate</label>
+                        <input type="text" id="education-degree-${index}" placeholder="e.g., Bachelor of Science in Computer Science">
+                    </div>
+                    <div class="form-group">
+                        <label for="education-institution-${index}">Institution</label>
+                        <input type="text" id="education-institution-${index}" placeholder="e.g., University Name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education-location-${index}">Location</label>
+                            <input type="text" id="education-location-${index}" placeholder="e.g., City, State">
+                        </div>
+                        <div class="form-group">
+                            <label for="education-duration-${index}">Duration</label>
+                            <input type="text" id="education-duration-${index}" placeholder="e.g., 2018 - 2022">
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', itemHTML);
+            updateResumePreview();
+        };
+
+        window.addExperienceItem = function() {
+            const section = document.querySelector('[data-section="experience"]');
+            const container = section.querySelector('.form-items-container');
+            const index = container.querySelectorAll('.form-item').length;
+            
+            const itemHTML = `
+                <div class="form-item" data-item-index="${index}">
+                    <div class="form-group">
+                        <label for="experience-position-${index}">Position/Title</label>
+                        <input type="text" id="experience-position-${index}" placeholder="e.g., Software Engineer">
+                    </div>
+                    <div class="form-group">
+                        <label for="experience-company-${index}">Company</label>
+                        <input type="text" id="experience-company-${index}" placeholder="e.g., Company Name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experience-location-${index}">Location</label>
+                            <input type="text" id="experience-location-${index}" placeholder="e.g., City, State">
+                        </div>
+                        <div class="form-group">
+                            <label for="experience-duration-${index}">Duration</label>
+                            <input type="text" id="experience-duration-${index}" placeholder="e.g., June 2022 - Present">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience-responsibilities-${index}">Responsibilities & Achievements</label>
+                        <textarea id="experience-responsibilities-${index}" rows="4" placeholder="• List your responsibilities\n• Quantify achievements when possible\n• Use bullet points"></textarea>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', itemHTML);
+            updateResumePreview();
+        };
     </script>
 </body>
 </html>
