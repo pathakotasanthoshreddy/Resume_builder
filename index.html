@@ -3,35 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATS Resume Builder | ATS-Friendly Professional Resumes</title>
+    <title>ATS Resume Builder | Create ATS-Friendly Professional Resumes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         /* ========== CSS VARIABLES ========== */
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
+            --primary-color: #4f46e5;
+            --primary-light: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #10b981;
+            --accent-light: #34d399;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            
+            --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 100%);
+            --gradient-secondary: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            
             --text-color: #1f2937;
             --text-light: #6b7280;
+            --text-lighter: #9ca3af;
             --border-color: #e5e7eb;
             --background-color: #f9fafb;
+            --background-light: #f3f4f6;
             --white: #ffffff;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --feedback-color: #8b5cf6;
             
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             
-            --border-radius: 6px;
-            --border-radius-lg: 12px;
+            --border-radius: 10px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
             
             --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --transition: all 0.2s ease;
+            --font-heading: 'Poppins', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* ========== BASE STYLES ========== */
@@ -44,16 +55,17 @@
         body {
             font-family: var(--font-family);
             color: var(--text-color);
-            background-color: var(--background-color);
-            line-height: 1.5;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
 
         .hidden {
@@ -62,34 +74,53 @@
 
         /* ========== TYPOGRAPHY ========== */
         h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
             font-weight: 600;
             line-height: 1.2;
             color: var(--text-color);
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         h2 {
-            font-size: 1.875rem;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
         }
 
         h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
         }
 
         h4 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.375rem;
+            margin-bottom: 0.75rem;
         }
 
         p {
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
             color: var(--text-light);
+            font-size: 1.125rem;
         }
 
         .text-center {
@@ -103,114 +134,109 @@
         /* ========== BUTTONS ========== */
         button {
             cursor: pointer;
-            font-family: var(--font-family);
-            font-weight: 500;
+            font-family: var(--font-heading);
+            font-weight: 600;
             border: none;
             border-radius: var(--border-radius);
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover:before {
+            left: 100%;
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
+            background: var(--gradient-primary);
             color: var(--white);
-            padding: 12px 24px;
-            font-size: 1rem;
-            border: 1px solid var(--primary-color);
+            padding: 14px 32px;
+            font-size: 1.125rem;
+            border: none;
+            box-shadow: var(--shadow-md);
         }
 
         .btn-primary:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-secondary {
-            background-color: transparent;
-            color: var(--primary-color);
-            padding: 12px 24px;
-            border: 1px solid var(--primary-color);
+            background: var(--gradient-secondary);
+            color: var(--white);
+            padding: 14px 32px;
+            font-size: 1.125rem;
+            border: none;
+            box-shadow: var(--shadow-md);
         }
 
         .btn-secondary:hover {
-            background-color: rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-outline {
-            background-color: transparent;
-            color: var(--text-color);
-            padding: 10px 20px;
-            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--primary-color);
+            padding: 12px 28px;
+            border: 2px solid var(--primary-color);
+            font-weight: 500;
         }
 
         .btn-outline:hover {
-            background-color: var(--background-color);
-            border-color: var(--text-light);
+            background: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-2px);
         }
 
         .btn-small {
-            padding: 6px 12px;
-            font-size: 0.875rem;
+            padding: 8px 20px;
+            font-size: 0.9375rem;
         }
 
         .btn-icon {
-            background: transparent;
-            color: var(--text-light);
-            width: 36px;
-            height: 36px;
+            background: var(--white);
+            color: var(--primary-color);
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-icon:hover {
-            background-color: var(--background-color);
-            color: var(--primary-color);
-        }
-
-        /* ========== FEEDBACK BUTTON ========== */
-        .btn-feedback {
-            background-color: var(--feedback-color);
-            color: var(--white);
-            padding: 8px 16px;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: var(--transition);
-            border: 1px solid var(--feedback-color);
-            cursor: pointer;
-        }
-
-        .btn-feedback:hover {
-            background-color: #7c3aed;
-            border-color: #7c3aed;
-            transform: translateY(-1px);
+            border: 2px solid var(--border-color);
             box-shadow: var(--shadow-sm);
         }
 
-        .btn-feedback-small {
-            padding: 6px 12px;
-            font-size: 0.85rem;
-        }
-
-        .feedback-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .btn-icon:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         /* ========== NAVIGATION ========== */
         .navbar {
-            background-color: var(--white);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             box-shadow: var(--shadow-sm);
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 100;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
             padding: 1rem 0;
+            border-bottom: 1px solid rgba(79, 70, 229, 0.1);
         }
 
         .navbar .container {
@@ -222,20 +248,25 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
+            gap: 12px;
+            font-size: 1.75rem;
             font-weight: 700;
             color: var(--primary-color);
             text-decoration: none;
+            font-family: var(--font-heading);
         }
 
         .logo i {
-            font-size: 1.75rem;
+            font-size: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 2.5rem;
             align-items: center;
         }
 
@@ -243,53 +274,106 @@
             color: var(--text-color);
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 1rem;
             transition: var(--transition);
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+            border-radius: 1px;
         }
 
         .nav-links a:hover {
             color: var(--primary-color);
         }
 
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
         .ats-badge {
-            background-color: rgba(37, 99, 235, 0.1);
-            color: var(--primary-color);
-            padding: 4px 12px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 0.875rem;
             font-weight: 600;
+            box-shadow: var(--shadow-sm);
         }
 
         /* ========== LANDING PAGE ========== */
         .landing-page {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #f6f9ff 0%, #ffffff 100%);
+            padding: 8rem 0 6rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .landing-page:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234f46e5' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
         }
 
         .landing-content {
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .main-title {
             color: var(--text-color);
             margin-bottom: 1.5rem;
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
+            line-height: 1.1;
         }
 
         .highlight {
-            color: var(--primary-color);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight:after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--accent-light);
+            opacity: 0.3;
+            z-index: -1;
+            border-radius: 4px;
         }
 
         .subtitle {
-            font-size: 1.25rem;
+            font-size: 1.375rem;
             color: var(--text-light);
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
@@ -297,93 +381,139 @@
 
         .ats-features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            margin: 3rem 0;
+            margin: 4rem 0;
         }
 
         .ats-feature {
             background: var(--white);
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
             text-align: center;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ats-feature:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-primary);
+        }
+
+        .ats-feature:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
         }
 
         .ats-feature i {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .ats-feature h3 {
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
         }
 
         .resume-type-selection {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
         }
 
         .type-card {
             background: var(--white);
-            border-radius: var(--border-radius-lg);
-            padding: 2.5rem;
-            box-shadow: var(--shadow-md);
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
             border: 2px solid transparent;
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .type-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient-primary);
         }
 
         .type-card:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
 
         .type-card h3 {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 1rem;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .type-card h3 i {
+            font-size: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .type-card ul {
             list-style: none;
             text-align: left;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
         }
 
         .type-card ul li {
-            margin-bottom: 0.75rem;
-            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
             position: relative;
+            color: var(--text-light);
         }
 
         .type-card ul li:before {
             content: "✓";
-            color: var(--success);
+            color: var(--accent-color);
             font-weight: bold;
             position: absolute;
             left: 0;
+            font-size: 1.25rem;
         }
 
         /* ========== EDITOR SECTION ========== */
         .editor-section {
-            padding: 3rem 0;
+            padding: 7rem 0 4rem;
             min-height: 100vh;
         }
 
         .editor-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
         .editor-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 3rem;
         }
 
         @media (max-width: 992px) {
@@ -394,15 +524,16 @@
 
         .edit-panel, .preview-panel {
             background: var(--white);
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-md);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-xl);
             overflow: hidden;
+            border: 1px solid var(--border-color);
         }
 
         .panel-header {
-            padding: 1.5rem;
-            background-color: var(--background-color);
-            border-bottom: 1px solid var(--border-color);
+            padding: 1.75rem 2rem;
+            background: var(--gradient-primary);
+            color: var(--white);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -411,91 +542,111 @@
         .panel-header h3 {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             margin: 0;
-            font-size: 1.25rem;
+            font-size: 1.375rem;
+            color: var(--white);
         }
 
         .resume-type-indicator {
-            padding: 1rem 1.5rem;
-            background-color: rgba(37, 99, 235, 0.1);
-            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 2rem;
+            background: var(--gradient-secondary);
+            color: var(--white);
+            font-weight: 600;
+            text-align: center;
         }
 
         .resume-type-indicator span {
             display: inline-block;
-            padding: 6px 16px;
-            background-color: var(--primary-color);
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
             color: var(--white);
             border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .form-container {
-            padding: 1.5rem;
-            max-height: 600px;
+            padding: 2rem;
+            max-height: 700px;
             overflow-y: auto;
         }
 
         .form-section {
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
+            margin-bottom: 1.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
             overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .form-section:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-md);
         }
 
         .section-header-editable {
-            padding: 1rem 1.5rem;
-            background-color: var(--background-color);
+            padding: 1.25rem 1.75rem;
+            background: var(--background-light);
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            border-bottom: 1px solid transparent;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
         }
 
         .section-header-editable:hover {
-            background-color: rgba(37, 99, 235, 0.05);
+            background: var(--primary-light);
+        }
+
+        .section-header-editable:hover h4,
+        .section-header-editable:hover .btn-section-toggle {
+            color: var(--white);
         }
 
         .section-header-editable h4 {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             margin: 0;
             font-size: 1.125rem;
+            color: var(--text-color);
+            transition: var(--transition);
         }
 
         .btn-section-toggle {
             background: transparent;
             color: var(--text-light);
             border: none;
-            font-size: 1rem;
+            font-size: 1.125rem;
+            transition: var(--transition);
         }
 
         .section-content {
-            padding: 1.5rem;
+            padding: 1.75rem;
         }
 
         .form-group {
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
             color: var(--text-color);
-            font-size: 0.95rem;
+            font-size: 0.9375rem;
         }
 
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 10px 14px;
-            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
             border-radius: var(--border-radius);
             font-family: var(--font-family);
             font-size: 1rem;
@@ -508,90 +659,172 @@
         .form-group select:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
 
         .form-group textarea {
-            min-height: 100px;
+            min-height: 120px;
             resize: vertical;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         .form-actions {
             display: flex;
-            gap: 1rem;
+            gap: 1.25rem;
             align-items: center;
         }
 
-        /* ========== ATS PREVIEW PANEL ========== */
+        /* ========== A4 RESUME PREVIEW WITH MARGINS ========== */
         .preview-panel {
             position: relative;
         }
 
         .ats-preview-badge {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background-color: var(--success);
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--gradient-secondary);
             color: var(--white);
-            padding: 4px 12px;
+            padding: 8px 20px;
             border-radius: 20px;
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
             z-index: 10;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .resume-preview-container {
+            padding: 2rem;
+            position: relative;
+        }
+
+        .a4-border {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            background: var(--white);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .a4-border:before {
+            content: '';
+            position: absolute;
+            top: 12.7mm;  /* 1.27 cm */
+            left: 12.7mm; /* 1.27 cm */
+            right: 12.7mm; /* 1.27 cm */
+            bottom: 12.7mm; /* 1.27 cm */
+            border: 1px dashed rgba(79, 70, 229, 0.3);
+            pointer-events: none;
+        }
+
+        .pdf-hide-borders:before {
+            content: none !important;
+        }
+
+        .margin-guides {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .margin-guide {
+            position: absolute;
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+        }
+
+        .margin-top {
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 12.7mm; /* 1.27 cm */
+        }
+
+        .margin-bottom {
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 12.7mm; /* 1.27 cm */
+        }
+
+        .margin-left {
+            top: 12.7mm; /* 1.27 cm */
+            left: 0;
+            width: 12.7mm; /* 1.27 cm */
+            height: calc(100% - 25.4mm); /* 297mm - (2 * 12.7mm) */
+        }
+
+        .margin-right {
+            top: 12.7mm; /* 1.27 cm */
+            right: 0;
+            width: 12.7mm; /* 1.27 cm */
+            height: calc(100% - 25.4mm); /* 297mm - (2 * 12.7mm) */
         }
 
         .resume-preview {
-            padding: 2.5rem;
+            padding: 12.7mm; /* 1.27 cm margins */
             background-color: var(--white);
             min-height: 700px;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', 'Helvetica', sans-serif;
             line-height: 1.5;
             color: #000000;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
         }
 
         /* ATS-Friendly Resume Styling */
         .ats-resume {
-            max-width: 800px;
-            margin: 0 auto;
-            font-size: 12px;
+            width: 100%;
+            font-size: 11pt;
             line-height: 1.4;
+            color: #000000;
         }
 
         .ats-resume-header {
-            padding-bottom: 20px;
-            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary-color);
             margin-bottom: 25px;
         }
 
         .ats-resume-name {
-            font-size: 24px;
+            font-size: 28pt;
             font-weight: bold;
             color: #000;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
         .ats-resume-title {
-            font-size: 16px;
-            color: #333;
-            margin-bottom: 15px;
+            font-size: 18pt;
+            color: var(--primary-color);
+            margin-bottom: 20px;
             font-weight: 600;
         }
 
         .ats-contact-info {
-            font-size: 11px;
+            font-size: 10pt;
             color: #333;
-            margin-bottom: 5px;
+            line-height: 1.6;
         }
 
         .ats-contact-info div {
-            margin-bottom: 3px;
+            margin-bottom: 5px;
         }
 
         .ats-section {
@@ -600,176 +833,272 @@
         }
 
         .ats-section-title {
-            font-size: 14px;
+            font-size: 14pt;
             font-weight: bold;
-            color: #000;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .ats-item {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             page-break-inside: avoid;
         }
 
         .ats-item-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
+            align-items: flex-start;
+            margin-bottom: 8px;
         }
 
         .ats-item-title {
             font-weight: bold;
-            font-size: 13px;
+            font-size: 12pt;
+            color: #000;
         }
 
         .ats-item-subtitle {
-            color: #333;
+            color: #555;
             font-style: italic;
-            font-size: 12px;
+            font-size: 11pt;
+            margin-top: 4px;
         }
 
         .ats-item-duration {
-            font-weight: 500;
-            color: #000;
-            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 11pt;
+            white-space: nowrap;
         }
 
         .ats-item-description {
             color: #000;
-            font-size: 11px;
+            font-size: 10.5pt;
             line-height: 1.5;
         }
 
         .ats-item-description ul {
             margin-left: 20px;
-            margin-top: 5px;
+            margin-top: 8px;
         }
 
         .ats-item-description li {
-            margin-bottom: 3px;
+            margin-bottom: 5px;
+            position: relative;
+            padding-left: 5px;
+        }
+
+        .ats-item-description li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: -15px;
         }
 
         .ats-skills-list {
-            font-size: 11px;
+            font-size: 10.5pt;
             line-height: 1.8;
         }
 
         .ats-skills-list div {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .ats-skills-list div:before {
+            content: "▸";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
         }
 
         .download-options {
-            padding: 1.5rem;
+            padding: 2rem;
             border-top: 1px solid var(--border-color);
-            background-color: var(--background-color);
+            background: var(--background-light);
         }
 
         .download-options h4 {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-align: center;
+            color: var(--text-color);
         }
 
         .download-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
         }
 
         .preview-actions {
             display: flex;
             justify-content: space-between;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         /* ========== FEATURES SECTION ========== */
         .features-section {
-            padding: 5rem 0;
-            background-color: var(--white);
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%238b5cf6' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+            position: relative;
+            z-index: 1;
         }
 
         .feature-card {
-            padding: 2rem;
-            border-radius: var(--border-radius-lg);
-            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-xl);
+            border: 2px solid var(--border-color);
             transition: var(--transition);
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
         }
 
         .feature-card:hover {
+            transform: translateY(-8px);
             border-color: var(--primary-color);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-xl);
         }
 
         .feature-icon {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--primary-color);
             margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .feature-card h3 {
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
         }
 
         /* ========== ATS TIPS SECTION ========== */
         .ats-tips-section {
-            padding: 5rem 0;
-            background-color: var(--background-color);
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            position: relative;
+            overflow: hidden;
         }
 
         .ats-tips-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+            position: relative;
+            z-index: 1;
         }
 
         .ats-tip-card {
             background: var(--white);
-            padding: 2rem;
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-sm);
-            border-left: 4px solid var(--primary-color);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-lg);
+            border-left: 5px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .ats-tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
         }
 
         .ats-tip-card h4 {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 1rem;
+            gap: 12px;
+            margin-bottom: 1.25rem;
+            color: var(--primary-color);
         }
 
         .ats-tip-card i {
+            font-size: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ats-tip-card ul {
+            list-style: none;
+            margin-left: 0;
+            color: var(--text-light);
+        }
+
+        .ats-tip-card ul li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.75rem;
+            position: relative;
+        }
+
+        .ats-tip-card ul li:before {
+            content: "•";
             color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.25rem;
         }
 
         /* ========== FEEDBACK SECTION ========== */
         .feedback-section {
-            padding: 5rem 0;
-            background-color: var(--white);
-            border-top: 1px solid var(--border-color);
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            position: relative;
+            overflow: hidden;
         }
 
         .feedback-container-main {
             background: var(--white);
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-md);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-xl);
             overflow: hidden;
+            border: 2px solid var(--border-color);
         }
 
         .feedback-header {
-            padding: 1.5rem;
-            background-color: var(--feedback-color);
+            padding: 2rem;
+            background: var(--gradient-primary);
             color: var(--white);
             text-align: center;
         }
@@ -778,66 +1107,92 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             margin: 0;
+            color: var(--white);
         }
 
         .google-form-container {
-            padding: 2rem;
+            padding: 2.5rem;
         }
 
         .google-form-iframe {
             width: 100%;
             height: 800px;
             border: none;
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
         }
 
         .feedback-actions {
-            padding: 1.5rem;
+            padding: 2rem;
             border-top: 1px solid var(--border-color);
-            background-color: var(--background-color);
+            background: var(--background-light);
             text-align: center;
         }
 
         /* ========== FOOTER ========== */
         .footer {
-            padding: 3rem 0;
-            background-color: var(--text-color);
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
             color: var(--white);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
         }
 
         .footer-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            font-size: 1.5rem;
+            gap: 12px;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--white);
             margin-bottom: 1.5rem;
+            font-family: var(--font-heading);
+        }
+
+        .footer-logo i {
+            font-size: 2.25rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .footer-description {
             max-width: 600px;
             margin: 0 auto 2rem;
-            color: #9ca3af;
+            color: #d1d5db;
+            font-size: 1.125rem;
         }
 
         .footer-note {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
             border-radius: var(--border-radius);
             max-width: 500px;
             margin: 0 auto 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 2rem;
             color: #9ca3af;
-            font-size: 0.875rem;
+            font-size: 0.9375rem;
         }
 
         /* ========== MODAL ========== */
@@ -847,26 +1202,39 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
         }
 
         .modal {
             background: var(--white);
-            border-radius: var(--border-radius-lg);
+            border-radius: var(--border-radius-xl);
             width: 90%;
             max-width: 500px;
             overflow: hidden;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-xl);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .modal-header {
-            padding: 1.5rem;
-            background-color: var(--background-color);
-            border-bottom: 1px solid var(--border-color);
+            padding: 1.75rem;
+            background: var(--gradient-primary);
+            color: var(--white);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -874,8 +1242,8 @@
 
         .btn-close-modal {
             background: transparent;
-            color: var(--text-light);
-            font-size: 1.2rem;
+            color: var(--white);
+            font-size: 1.5rem;
         }
 
         .modal-body {
@@ -883,37 +1251,41 @@
         }
 
         .modal-footer {
-            padding: 1.5rem;
+            padding: 1.75rem;
             border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: flex-end;
+            background: var(--background-light);
         }
 
         .section-options {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            gap: 1.25rem;
+            margin-top: 1.75rem;
         }
 
         .section-option {
-            padding: 1rem;
-            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border: 2px solid var(--border-color);
             border-radius: var(--border-radius);
             cursor: pointer;
             transition: var(--transition);
             text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .section-option:hover {
             border-color: var(--primary-color);
-            background-color: rgba(37, 99, 235, 0.05);
+            background: rgba(79, 70, 229, 0.05);
+            transform: translateX(5px);
         }
 
         .section-option i {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             color: var(--primary-color);
-            margin-bottom: 0.5rem;
         }
 
         /* ========== TOAST ========== */
@@ -921,16 +1293,17 @@
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            background-color: var(--success);
+            background: var(--gradient-secondary);
             color: var(--white);
-            padding: 1rem 1.5rem;
+            padding: 1.25rem 2rem;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
-            z-index: 1000;
+            box-shadow: var(--shadow-xl);
+            z-index: 2000;
             display: flex;
             align-items: center;
-            gap: 10px;
-            animation: slideIn 0.3s ease;
+            gap: 12px;
+            animation: slideIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 400px;
         }
 
         @keyframes slideIn {
@@ -949,11 +1322,11 @@
         }
 
         .toast.error {
-            background-color: var(--danger);
+            background: var(--gradient-warning);
         }
 
         .toast.warning {
-            background-color: var(--warning);
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
         }
 
         /* ========== LOADING OVERLAY ========== */
@@ -963,23 +1336,24 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1001;
+            z-index: 2001;
             color: var(--white);
+            backdrop-filter: blur(10px);
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border: 4px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             border-top-color: var(--white);
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 1.5rem;
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            margin-bottom: 2rem;
         }
 
         @keyframes spin {
@@ -999,7 +1373,15 @@
             }
             
             .main-title {
-                font-size: 2.25rem;
+                font-size: 2.5rem;
+            }
+            
+            h1 {
+                font-size: 2.75rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
             }
             
             .editor-container {
@@ -1022,26 +1404,57 @@
                 height: 600px;
             }
             
-            .mobile-feedback-btn {
-                display: flex !important;
+            .a4-border {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 210 / 297;
+            }
+            
+            .resume-type-selection {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .type-card {
+                padding: 2rem;
             }
         }
 
         @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            h1 {
+                font-size: 2.25rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
             .type-card {
                 padding: 1.5rem;
             }
             
             .ats-feature {
-                padding: 1.5rem;
-            }
-            
-            .resume-preview {
-                padding: 1.5rem;
+                padding: 2rem;
             }
             
             .google-form-iframe {
                 height: 500px;
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .panel-header {
+                padding: 1.25rem 1.5rem;
             }
         }
 
@@ -1050,21 +1463,43 @@
             display: none;
             background: transparent;
             border: none;
-            font-size: 1.5rem;
-            color: var(--text-color);
+            font-size: 1.75rem;
+            color: var(--primary-color);
             cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: var(--border-radius);
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-button:hover {
+            background: rgba(79, 70, 229, 0.1);
         }
 
         .mobile-menu {
             display: none;
             position: fixed;
-            top: 70px;
+            top: 80px;
             left: 0;
             width: 100%;
             background: var(--white);
-            box-shadow: var(--shadow-md);
-            z-index: 99;
-            padding: 1rem;
+            box-shadow: var(--shadow-xl);
+            z-index: 999;
+            padding: 1.5rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .mobile-menu.active {
@@ -1074,7 +1509,30 @@
         .mobile-menu-links {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.25rem;
+        }
+
+        .mobile-menu-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.125rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-menu-links a:hover {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-links a i {
+            width: 24px;
+            text-align: center;
         }
 
         .mobile-feedback-btn {
@@ -1090,7 +1548,9 @@
             .download-options,
             .ats-preview-badge,
             .feedback-section,
-            .footer {
+            .footer,
+            .margin-guides,
+            .a4-border:before {
                 display: none !important;
             }
             
@@ -1101,19 +1561,36 @@
             .preview-panel {
                 box-shadow: none;
                 border: none;
+                width: 100%;
+            }
+            
+            .a4-border {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                box-shadow: none;
+                border: none;
             }
             
             .resume-preview {
+                padding: 12.7mm; /* 1.27 cm margins */
                 min-height: auto;
                 padding: 0;
             }
             
             .ats-resume {
-                font-size: 11px;
+                font-size: 11pt;
             }
             
             body {
                 background-color: white;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .container {
+                max-width: none;
+                padding: 0;
             }
         }
     </style>
@@ -1127,14 +1604,14 @@
                 <span>ATS Resume Builder</span>
             </a>
             <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#features">Features</a>
-                <a href="#ats-tips">ATS Tips</a>
-                <a href="#feedback">Feedback</a>
-                <span class="ats-badge">100% ATS Friendly</span>
+                <a href="#home"><i class="fas fa-home"></i> Home</a>
+                <a href="#features"><i class="fas fa-star"></i> Features</a>
+                <a href="#ats-tips"><i class="fas fa-lightbulb"></i> ATS Tips</a>
+                <a href="#feedback"><i class="fas fa-comment-dots"></i> Feedback</a>
+                <span class="ats-badge"><i class="fas fa-check"></i> 100% ATS Friendly</span>
                 <button class="btn-feedback" id="feedback-btn-nav">
                     <i class="fas fa-comment-dots"></i>
-                    <span>Feedback</span>
+                    <span>Give Feedback</span>
                 </button>
             </div>
             <button class="mobile-menu-button" id="mobile-menu-btn">
@@ -1147,14 +1624,14 @@
     <div class="mobile-menu" id="mobile-menu">
         <div class="container">
             <div class="mobile-menu-links">
-                <a href="#home" class="mobile-menu-link">Home</a>
-                <a href="#features" class="mobile-menu-link">Features</a>
-                <a href="#ats-tips" class="mobile-menu-link">ATS Tips</a>
-                <a href="#feedback" class="mobile-menu-link">Feedback</a>
+                <a href="#home"><i class="fas fa-home"></i> Home</a>
+                <a href="#features"><i class="fas fa-star"></i> Features</a>
+                <a href="#ats-tips"><i class="fas fa-lightbulb"></i> ATS Tips</a>
+                <a href="#feedback"><i class="fas fa-comment-dots"></i> Feedback</a>
                 <div class="mobile-feedback-btn">
                     <button class="btn-feedback" id="feedback-btn-mobile">
                         <i class="fas fa-comment-dots"></i>
-                        <span>Feedback</span>
+                        <span>Give Feedback</span>
                     </button>
                 </div>
             </div>
@@ -1166,7 +1643,7 @@
         <div class="container">
             <div class="landing-content">
                 <h1 class="main-title">Create <span class="highlight">ATS-Friendly</span> Resumes</h1>
-                <p class="subtitle">Get past Applicant Tracking Systems and land more interviews with professionally formatted, ATS-optimized resumes</p>
+                <p class="subtitle">Get past Applicant Tracking Systems and land more interviews with professionally formatted, ATS-optimized resumes that recruiters love</p>
                 
                 <div class="ats-features">
                     <div class="ats-feature">
@@ -1198,7 +1675,7 @@
                             <li>Standard chronological format</li>
                         </ul>
                         <button class="btn-primary" style="width: 100%; margin-top: 20px;">
-                            Create Fresher Resume
+                            <i class="fas fa-graduation-cap"></i> Create Fresher Resume
                         </button>
                     </div>
                     
@@ -1213,7 +1690,7 @@
                             <li>Reverse-chronological format</li>
                         </ul>
                         <button class="btn-primary" style="width: 100%; margin-top: 20px;">
-                            Create Professional Resume
+                            <i class="fas fa-briefcase"></i> Create Professional Resume
                         </button>
                     </div>
                 </div>
@@ -1233,7 +1710,7 @@
         <div class="container">
             <div class="editor-header">
                 <h2>ATS Resume Editor</h2>
-                <p class="text-muted">Fill in your details. The preview shows exactly how ATS systems will see your resume.</p>
+                <p class="text-muted">Fill in your details. The preview shows exactly how ATS systems will see your resume with proper A4 margins.</p>
             </div>
             
             <div class="editor-container">
@@ -1309,14 +1786,24 @@
                         <i class="fas fa-check"></i> ATS FRIENDLY
                     </div>
                     <div class="panel-header">
-                        <h3><i class="fas fa-eye"></i> ATS Preview</h3>
+                        <h3><i class="fas fa-eye"></i> ATS Preview (A4 Format)</h3>
                         <button class="btn-outline btn-small" id="toggle-formatting">
                             <i class="fas fa-code"></i> Show Plain Text
                         </button>
                     </div>
                     
-                    <div class="resume-preview" id="resume-preview">
-                        <!-- ATS resume preview will be generated here -->
+                    <div class="resume-preview-container">
+                        <div class="a4-border">
+                            <div class="margin-guides">
+                                <div class="margin-guide margin-top"></div>
+                                <div class="margin-guide margin-bottom"></div>
+                                <div class="margin-guide margin-left"></div>
+                                <div class="margin-guide margin-right"></div>
+                            </div>
+                            <div class="resume-preview" id="resume-preview">
+                                <!-- ATS resume preview will be generated here -->
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="download-options">
@@ -1337,9 +1824,9 @@
                                 <i class="fas fa-print"></i> Print Resume
                             </button>
                         </div>
-                        <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-light); text-align: center;">
+                        <p style="margin-top: 1rem; font-size: 0.9375rem; color: var(--text-light); text-align: center;">
                             <i class="fas fa-lightbulb"></i> 
-                            <strong>Tip:</strong> For best ATS results, use the PDF version. Some ATS prefer .docx files.
+                            <strong>Tip:</strong> For best ATS results, use the PDF version. The preview shows proper 1.27cm margins as per A4 standards.
                         </p>
                     </div>
                 </div>
@@ -1402,7 +1889,7 @@
             <div class="ats-tips-grid">
                 <div class="ats-tip-card">
                     <h4><i class="fas fa-ban"></i> Avoid These</h4>
-                    <ul style="margin-left: 1.5rem; color: var(--text-light);">
+                    <ul>
                         <li>Tables and columns</li>
                         <li>Headers and footers</li>
                         <li>Images and graphics</li>
@@ -1414,7 +1901,7 @@
                 
                 <div class="ats-tip-card">
                     <h4><i class="fas fa-check"></i> Always Include</h4>
-                    <ul style="margin-left: 1.5rem; color: var(--text-light);">
+                    <ul>
                         <li>Standard section headers</li>
                         <li>Clear job titles</li>
                         <li>Company names and dates</li>
@@ -1426,7 +1913,7 @@
                 
                 <div class="ats-tip-card">
                     <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
-                    <ul style="margin-left: 1.5rem; color: var(--text-light);">
+                    <ul>
                         <li>Use PDF format (most ATS read it well)</li>
                         <li>Include keywords from job description</li>
                         <li>Spell out acronyms first time</li>
@@ -1463,7 +1950,7 @@
                 </div>
                 
                 <div class="feedback-actions">
-                    <p style="margin-bottom: 1rem; color: var(--text-light);">
+                    <p style="margin-bottom: 1.5rem; color: var(--text-light);">
                         <i class="fas fa-info-circle"></i> 
                         Thank you for taking the time to provide feedback! Your input is valuable.
                     </p>
@@ -1488,7 +1975,7 @@
             </p>
             
             <!-- Feedback Button in Footer -->
-            <div class="feedback-container" style="justify-content: center; margin: 1.5rem 0;">
+            <div class="feedback-container" style="justify-content: center; margin: 2rem 0;">
                 <button class="btn-feedback btn-feedback-small" id="feedback-btn-footer">
                     <i class="fas fa-star"></i>
                     <span>Help Improve This Tool - Give Feedback</span>
@@ -1543,7 +2030,6 @@
         // ========== APPLICATION STATE ==========
         const appState = {
             resumeType: 'fresher',
-            currentColor: '#2563eb',
             resumeData: {
                 personal: {
                     name: 'John Smith',
@@ -1798,6 +2284,22 @@
                     elements.mobileMenu.classList.remove('active');
                 }
             });
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
         }
 
         function setupMobileMenu() {
@@ -1923,7 +2425,7 @@
                         <div class="form-group">
                             <label for="summary-content">Professional Summary (2-3 sentences)</label>
                             <textarea id="summary-content" rows="4">${sectionData.content}</textarea>
-                            <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">
+                            <p style="font-size: 0.9375rem; color: var(--text-light); margin-top: 0.5rem;">
                                 <i class="fas fa-lightbulb"></i> Tip: Include keywords from the job description you're applying for.
                             </p>
                         </div>
@@ -2008,7 +2510,7 @@
                     <div class="form-group">
                         <label for="experience-responsibilities-${index}">Responsibilities & Achievements</label>
                         <textarea id="experience-responsibilities-${index}" rows="6">${item.responsibilities ? item.responsibilities.join('\n• ') : ''}</textarea>
-                        <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">
+                        <p style="font-size: 0.9375rem; color: var(--text-light); margin-top: 0.5rem;">
                             <i class="fas fa-lightbulb"></i> Tip: Use bullet points (start each line with •) and quantify achievements when possible.
                         </p>
                     </div>
@@ -2038,7 +2540,7 @@
                 <div class="form-group">
                     <label for="skills-category-${catIndex}">Category ${catIndex + 1}</label>
                     <input type="text" id="skills-category-${catIndex}" value="${category.category}" placeholder="e.g., Programming Languages">
-                    <label style="margin-top: 0.5rem;">Skills (comma separated)</label>
+                    <label style="margin-top: 0.75rem;">Skills (comma separated)</label>
                     <input type="text" id="skills-items-${catIndex}" value="${category.items.join(', ')}" placeholder="e.g., JavaScript, Python, Java">
                 </div>
             `).join('');
@@ -2050,7 +2552,7 @@
                         <button class="btn-section-toggle"><i class="fas fa-chevron-down"></i></button>
                     </div>
                     <div class="section-content">
-                        <p style="font-size: 0.875rem; color: var(--text-light); margin-bottom: 1rem;">
+                        <p style="font-size: 0.9375rem; color: var(--text-light); margin-bottom: 1rem;">
                             <i class="fas fa-lightbulb"></i> Tip: Group skills by category for better ATS parsing.
                         </p>
                         ${categoriesHTML}
@@ -2135,9 +2637,9 @@
             const itemsHTML = sectionData.items.map((item, index) => `
                 <div class="form-group">
                     <input type="text" value="${item.position}" placeholder="Internship Position">
-                    <input type="text" value="${item.company}" placeholder="Company" style="margin-top: 0.5rem;">
-                    <input type="text" value="${item.duration}" placeholder="Duration" style="margin-top: 0.5rem;">
-                    <textarea placeholder="Description" style="margin-top: 0.5rem;" rows="2">${item.description}</textarea>
+                    <input type="text" value="${item.company}" placeholder="Company" style="margin-top: 0.75rem;">
+                    <input type="text" value="${item.duration}" placeholder="Duration" style="margin-top: 0.75rem;">
+                    <textarea placeholder="Description" style="margin-top: 0.75rem;" rows="2">${item.description}</textarea>
                 </div>
             `).join('');
             
@@ -2235,9 +2737,9 @@
                         <div class="ats-resume-name">${personal.name}</div>
                         <div class="ats-resume-title">${personal.title}</div>
                         <div class="ats-contact-info">
-                            <div>${personal.email} | ${personal.phone}</div>
-                            <div>${personal.address}</div>
-                            <div>${personal.linkedin} | ${personal.portfolio}</div>
+                            <div><strong>Email:</strong> ${personal.email} | <strong>Phone:</strong> ${personal.phone}</div>
+                            <div><strong>Location:</strong> ${personal.address}</div>
+                            <div><strong>LinkedIn:</strong> ${personal.linkedin} | <strong>Portfolio:</strong> ${personal.portfolio}</div>
                         </div>
                     </div>
                     
@@ -2342,8 +2844,10 @@
                     option.className = 'section-option';
                     option.innerHTML = `
                         <i class="${section.icon}"></i>
-                        <h5>${section.title}</h5>
-                        <p style="font-size: 0.875rem; color: var(--text-light);">Add ${section.title} section</p>
+                        <div>
+                            <h5>${section.title}</h5>
+                            <p style="font-size: 0.9375rem; color: var(--text-light);">Add ${section.title} section</p>
+                        </div>
                     `;
                     
                     option.addEventListener('click', () => {
@@ -2413,7 +2917,14 @@
             showLoading();
             
             try {
-                const element = document.getElementById('resume-preview');
+                // Capture only the resume content, not the border container
+                const element = document.querySelector('.resume-preview');
+                const container = element.parentElement;
+                
+                // Hide borders for PDF generation
+                container.classList.add('pdf-hide-borders');
+                container.style.border = 'none';
+                
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 
@@ -2422,15 +2933,20 @@
                     scale: 2,
                     useCORS: true,
                     logging: false,
-                    backgroundColor: '#ffffff'
+                    backgroundColor: '#ffffff',
+                    width: 794, // A4 width in pixels at 96 DPI
+                    height: 1123 // A4 height in pixels at 96 DPI
                 });
                 
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 190;
-                const pageHeight = 280;
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                // Restore borders
+                container.classList.remove('pdf-hide-borders');
+                container.style.border = '';
                 
-                pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210; // A4 width in mm
+                const imgHeight = 297; // A4 height in mm
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
                 pdf.save(`ATS_Resume_${appState.resumeData.personal.name.replace(/\s+/g, '_')}.pdf`);
                 
                 hideLoading();
@@ -2449,7 +2965,7 @@
             
             const personal = appState.resumeData.personal;
             let textContent = `RESUME - ${personal.name}\n`;
-            textContent += '='.repeat(50) + '\n\n';
+            textContent += '='.repeat(60) + '\n\n';
             textContent += `${personal.name}\n`;
             textContent += `${personal.title}\n\n`;
             textContent += `Contact Information:\n`;
@@ -2619,7 +3135,7 @@
                 <div class="form-group">
                     <label for="skills-category-${index}">Category ${index + 1}</label>
                     <input type="text" id="skills-category-${index}" placeholder="e.g., Additional Skills">
-                    <label style="margin-top: 0.5rem;">Skills (comma separated)</label>
+                    <label style="margin-top: 0.75rem;">Skills (comma separated)</label>
                     <input type="text" id="skills-items-${index}" placeholder="e.g., Skill 1, Skill 2, Skill 3">
                 </div>
             `;
